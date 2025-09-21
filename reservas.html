@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pré-reserva — VMZ Turismo</title>
+  <style>
+    body { font-family: Inter, system-ui, Arial; background:#f7fafa; margin:0; padding:20px; color:#071229; }
+    .container{max-width:720px;margin:24px auto;background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+    h1{color:#0f766e;margin-top:0}
+    label{display:block;margin-top:10px;font-weight:600}
+    input,select,button{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef5;font-size:1rem}
+    .small{color:#64748b;font-size:.9rem;margin-top:6px}
+    button{background:#0f766e;color:#fff;border:0;margin-top:14px;cursor:pointer}
+    .preview{white-space:pre-wrap;background:#f1f7f6;padding:12px;border-radius:8px;margin-top:12px;border:1px dashed #e6eef5}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pré-reserva — VMZ Turismo</h1>
+    <p class="small">Mensagem será enviada para <strong>+55 83 8195-2443</strong>.</p>
+
+    <form id="reserveForm" onsubmit="return false;">
+      <label for="nome">Nome completo *</label>
+      <input id="nome" type="text" required />
+
+      <label for="telefone">Telefone (DDD + número) *</label>
+      <input id="telefone" type="tel" required />
+
+      <label for="destino">Destino *</label>
+      <select id="destino" required>
+        <option value="">— selecione —</option>
+        <option>Praia Bela - PB</option>
+        <option>Porto de Galinhas - PE</option>
+        <option>Canoa Quebrada - CE</option>
+        <option>Pipa - RN</option>
+      </select>
+
+      <label for="passageiros">Passageiros</label>
+      <input id="passageiros" type="number" min="1" value="1" />
+
+      <label for="data">Data prevista (opcional)</label>
+      <input id="data" type="date" />
+
+      <button type="button" id="sendBtn">Enviar pelo WhatsApp</button>
+
+      <div id="preview" class="preview">A pré-visualização aparecerá aqui.</div>
+    </form>
+  </div>
+
+  <script>
+    // Função que monta mensagem com quebras de linha reais
+    function montarMensagem({nome, telefone, destino, passageiros, data}) {
+      let msg = '✅ *Pré-reserva — VMZ Turismo*\\n';
+      msg += '*Nome:* ' + nome + '\n';
+      msg += '*Destino:* ' + destino + '\n';
+      msg += '*Passageiros:* ' + passageiros + '\n';
+      if (data) msg += '*Data prevista:* ' + data + '\n';
+      msg += '*Contato informado:* ' + telefone + '\n\n';
+      msg += 'Por favor, confirmar disponibilidade e próximos passos.';
+      return msg;
+    }
+
+    // normalize phone to digits and add 55 if necessary
+    function normalizePhone(raw) {
+      if (!raw) return '';
+      const digits = raw.replace(/\\D/g,'');
+      if (digits.startsWith('55')) return digits;
+      if (digits.length === 11 || digits.length === 10) return '55' + digits;
+      if (digits.length > 11) return digits;
+      return digits;
+    }
+
+    // leitura de query params e preenchimento
+    function prefillFromQuery(){
+      const params = new URLSearchParams(window.location.search);
+      const destino = params.get('destino');
+      const passageiros = params.get('passageiros');
+      const data = params.get('data');
+      if (destino) {
+        const sel = document.getElementById('destino');
+        // tenta selecionar opção que case com texto
+        for (let i=0;i<sel.options.length;i++){
+          if (sel.options[i].text === destino) { sel.selectedIndex = i; break; }
+        }
+      }
+      if (passageiros) document.getElementById('passageiros').value = passageiros;
+      if (data) document.getElementById('data').value = data;
+      // se veio com destino, foca no nome para agilizar preenchimento
+      if (destino) document.getElementById('nome').focus();
+    }
+
+    // atualiza preview
+    function updatePreview(){
+      const nome = document.getElementById('nome').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const destino = document.getElementById('destino').value;
+      const passageiros = document.getElementById('passageiros').value || '1';
+      const dataRaw = document.getElementById('data').value;
+      const data = dataRaw ? new Date(dataRaw).toLocaleDateString('pt-BR') : '';
+      if (!nome || !telefone || !destino) {
+        document.getElementById('preview').innerText = 'Preencha Nome, Telefone e Destino para ver a pré-visualização.';
+        return null;
+      }
+      const msg = montarMensagem({nome, telefone, destino, passageiros, data});
+      document.getElementById('preview').innerText = msg;
+      return msg;
+    }
+
+    document.getElementById('sendBtn').addEventListener('click', () => {
+      const nome = document.getElementById('nome').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const destino = document.getElementById('destino').value;
+      const passageiros = document.getElementById('passageiros').value || '1';
+      const dataRaw = document.getElementById('data').value;
+      const data = dataRaw ? new Date(dataRaw).toLocaleDateString('pt-BR') : '';
+
+      if (!nome || !telefone || !destino) {
+        alert('Por favor, preencha Nome, Telefone e Destino.');
+        return;
+      }
+
+      const mensagem = montarMensagem({nome, telefone, destino, passageiros, data});
+      document.getElementById('preview').innerText = mensagem;
+
+      // número fixo VMZ
+      const numero = '558381952443';
+      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    });
+
+    // auto prefill se houver query params
+    prefillFromQuery();
+
+    // atualizar preview enquanto digita (opcional)
+    ['nome','telefone','destino','passageiros','data'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => updatePreview());
+      document.getElementById(id).addEventListener('change', () => updatePreview());
+    });
+
+    // inicial preview
+    updatePreview();
+  </script>
+</body>
+</html>

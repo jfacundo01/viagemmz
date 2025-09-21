@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reservas — VMZ Turismo</title>
+  <style>
+    :root{--accent:#0f766e;--muted:#64748b;--card:#fff}
+    body{font-family:Inter,system-ui,Arial;background:#f6fbfb;margin:0;color:#071229}
+    .wrap{max-width:1100px;margin:36px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#0b5f52);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+    h1{margin:0;font-size:1.4rem}
+    p.lead{color:var(--muted);margin:6px 0 18px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 24px rgba(2,6,23,0.06);display:flex;flex-direction:column;gap:10px}
+    .card img{width:100%;height:150px;object-fit:cover;border-radius:10px}
+    .card h3{margin:0;font-size:1.05rem}
+    .card p{margin:0;color:var(--muted);font-size:.95rem}
+    .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .btn{background:var(--accent);color:#fff;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    .btn-ghost{background:transparent;border:1px solid #e6eef5;padding:9px 10px;border-radius:10px;cursor:pointer}
+    .filters{display:flex;gap:10px;margin-bottom:14px;align-items:center}
+    select,input{padding:8px;border-radius:8px;border:1px solid #e6eef5}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="logo">VMZ</div>
+      <div>
+        <h1>Destinos disponíveis</h1>
+        <p class="lead">Clique em "Reservar" no destino desejado para abrir o formulário de pré-reserva já preenchido.</p>
+      </div>
+    </header>
+
+    <section class="controls" style="margin-bottom:12px">
+      <div class="filters">
+        <label>
+          Filtrar por destino:
+          <select id="filterSelect">
+            <option value="">Todos</option>
+            <option>Praia Bela - PB</option>
+            <option>Porto de Galinhas - PE</option>
+            <option>Canoa Quebrada - CE</option>
+            <option>Pipa - RN</option>
+          </select>
+        </label>
+
+        <label>
+          Passageiros:
+          <input id="filterPassengers" type="number" min="1" value="1" style="width:80px"/>
+        </label>
+
+        <label>
+          Data:
+          <input id="filterDate" type="date"/>
+        </label>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid" id="destGrid">
+        <!-- cards gerados por JS -->
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Lista de destinos (pode adicionar imagens locais substituindo os URLs)
+    const DESTINOS = [
+      { id:'praia-bela', title:'Praia Bela - PB', excerpt:'Areias brancas e mar calmo.', img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=60' },
+      { id:'porto-galinhas', title:'Porto de Galinhas - PE', excerpt:'Piscinas naturais e jangadas.', img:'https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1200&q=60' },
+      { id:'canoa-quebrada', title:'Canoa Quebrada - CE', excerpt:'Dunas e vida noturna animada.', img:'https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1200&q=60' },
+      { id:'pipa', title:'Pipa - RN', excerpt:'Praias, falésias e golfinhos.', img:'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1200&q=60' }
+    ];
+
+    const grid = document.getElementById('destGrid');
+    const filterSelect = document.getElementById('filterSelect');
+    const filterPassengers = document.getElementById('filterPassengers');
+    const filterDate = document.getElementById('filterDate');
+
+    function render(destinos) {
+      grid.innerHTML = destinos.map(d => `
+        <article class="card" data-id="${d.id}">
+          <img src="${d.img}" alt="${d.title}" loading="lazy"/>
+          <h3>${d.title}</h3>
+          <p>${d.excerpt}</p>
+          <div class="row">
+            <small style="color:var(--muted)">${d.id.toUpperCase()}</small>
+            <div style="display:flex;gap:8px">
+              <button class="btn" data-action="reservar" data-destino="${encodeURIComponent(d.title)}">Reservar</button>
+              <button class="btn-ghost" data-action="detalhes" data-id="${d.id}">Detalhes</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      attachListeners();
+    }
+
+    function attachListeners(){
+      grid.querySelectorAll('[data-action="reservar"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const destino = decodeURIComponent(btn.dataset.destino);
+          // pegar filtros opcionais
+          const passageiros = filterPassengers.value || '1';
+          const date = filterDate.value || '';
+          // construir query string para index.html
+          const params = new URLSearchParams();
+          params.set('destino', destino);
+          params.set('passageiros', passageiros);
+          if (date) params.set('data', date);
+          // abrir index.html (mesma pasta) com params
+          window.location.href = `reservas.html?${params.toString()}`;
+        });
+      });
+
+      grid.querySelectorAll('[data-action="detalhes"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alert('Detalhes do destino em breve. (Simulação)\nID: ' + btn.dataset.id);
+        });
+      });
+    }
+
+    filterSelect.addEventListener('change', () => {
+      const val = filterSelect.value;
+      const filtered = val ? DESTINOS.filter(d => d.title === val) : DESTINOS;
+      render(filtered);
+    });
+
+    // inicial
+    render(DESTINOS);
+  </script>
+</body>
+</html>
