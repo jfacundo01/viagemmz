@@ -51,15 +51,12 @@
       <div class="logo">VMZ</div>
       <div>
         <h1>Formulário de Pré-reserva</h1>
-        <p class="lead">A mensagem será enviada para <strong>+55 83 8195-2443</strong>. Verifique antes de enviar.</p>
+        <p class="lead">Verifique todos os dados antes de enviar.</p>
       </div>
     </header>
 
     <div class="top-controls">
       <button id="btnBack" class="back-link">← Voltar à lista</button>
-      <div style="display:flex;gap:8px;align-items:center">
-        <div style="background:var(--orange);color:#fff;padding:6px 10px;border-radius:8px;font-weight:700">Contato: +55 83 8195-2443</div>
-      </div>
     </div>
 
     <section class="card" aria-labelledby="formTitle">
@@ -88,8 +85,6 @@
 
         <div class="actions">
           <button id="btnSend" class="btn btn-send" type="button">Gerar & Enviar</button>
-          <button id="btnOpen" class="btn btn-open" type="button">Apenas Abrir WhatsApp</button>
-          <button id="btnCopy" class="btn btn-ghost" type="button">Copiar mensagem</button>
         </div>
 
         <div id="messageBox" class="preview">A pré-visualização aparecerá aqui.</div>
@@ -97,7 +92,7 @@
       </form>
     </section>
 
-    <footer>© VMZ Turismo — Azul • Laranja • Branco</footer>
+    <footer>© VMZ Turismo - JR.Dev</footer>
   </main>
 
   <script>
@@ -109,8 +104,6 @@
     const dataEl = document.getElementById('data');
 
     const btnSend = document.getElementById('btnSend');
-    const btnOpen = document.getElementById('btnOpen');
-    const btnCopy = document.getElementById('btnCopy');
     const btnBack = document.getElementById('btnBack');
 
     const messageBox = document.getElementById('messageBox');
@@ -118,15 +111,6 @@
 
     // Número fixo (sem sinais) para wa.me
     const FIX_NUMBER = '558381952443'; // +55 83 8195-2443
-
-    // Normaliza telefone (mantém dígitos e adiciona 55 se necessário)
-    function normalizePhoneDigits(raw){
-      if(!raw) return '';
-      const digits = raw.replace(/\D/g,'');
-      if (digits.startsWith('55')) return digits;
-      if (digits.length === 11 || digits.length === 10) return '55' + digits;
-      return digits;
-    }
 
     // Monta mensagem com quebras de linha reais (\n)
     function montarMensagem({nome, telefone, destino, passageiros, data}){
@@ -204,7 +188,6 @@
     // Botão Voltar: mantém filtros (passageiros/data/filter se vieram)
     function buildBackUrl(){
       const params = new URLSearchParams(window.location.search);
-      // Passa adiante os mesmos params que index.html entende: passageiros, data, filter
       const passageiros = params.get('passageiros');
       const data = params.get('data');
       const filter = params.get('filter');
@@ -222,18 +205,6 @@
       if(!res) { alert('Preencha Nome, Telefone e Destino.'); return; }
       // abre o wa.me com link (mensagem pronta). envio final é manual no app.
       window.open(res.link, '_blank');
-    });
-
-    btnOpen.addEventListener('click', () => {
-      const res = atualizarPreview();
-      if(!res) { alert('Gere a mensagem primeiro.'); return; }
-      window.open(res.link, '_blank');
-    });
-
-    btnCopy.addEventListener('click', async () => {
-      const res = atualizarPreview();
-      if(!res) { alert('Gere a mensagem primeiro.'); return; }
-      await copiarTexto(res.mensagem);
     });
 
     btnBack.addEventListener('click', () => {
