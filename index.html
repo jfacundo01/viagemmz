@@ -3,27 +3,48 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Reservas — VMZ Turismo</title>
+  <title>VMZ Turismo — Destinos</title>
+  <meta name="description" content="Tela principal — destinos disponíveis. Clique em Reservar para abrir o formulário."/>
   <style>
-    :root{--accent:#0f766e;--muted:#64748b;--card:#fff}
-    body{font-family:Inter,system-ui,Arial;background:#f6fbfb;margin:0;color:#071229}
-    .wrap{max-width:1100px;margin:36px auto;padding:20px}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#0b5f52);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
-    h1{margin:0;font-size:1.4rem}
-    p.lead{color:var(--muted);margin:6px 0 18px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:640px){.grid{grid-template-columns:1fr}}
-    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 24px rgba(2,6,23,0.06);display:flex;flex-direction:column;gap:10px}
-    .card img{width:100%;height:150px;object-fit:cover;border-radius:10px}
-    .card h3{margin:0;font-size:1.05rem}
-    .card p{margin:0;color:var(--muted);font-size:.95rem}
-    .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-    .btn{background:var(--accent);color:#fff;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
-    .btn-ghost{background:transparent;border:1px solid #e6eef5;padding:9px 10px;border-radius:10px;cursor:pointer}
-    .filters{display:flex;gap:10px;margin-bottom:14px;align-items:center}
-    select,input{padding:8px;border-radius:8px;border:1px solid #e6eef5}
+    :root{
+      --blue:#0b63c6;
+      --orange:#ff7a18;
+      --white:#ffffff;
+      --muted:#6b7280;
+      --bg:linear-gradient(180deg,#f5f8ff 0%, #ffffff 100%);
+      --card-shadow: 0 12px 30px rgba(11,99,198,0.06);
+      --radius:14px;
+      --maxw:1100px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#071229;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--maxw);margin:18px auto;padding:16px}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--blue),#0851a8);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;box-shadow:var(--card-shadow)}
+    h1{margin:0;font-size:1.25rem}
+    p.lead{margin:4px 0 10px;color:var(--muted);font-size:.95rem}
+
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .controls label{font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+    .controls select, .controls input{padding:10px;border-radius:10px;border:1px solid #eef5ff;background:var(--white);font-size:.95rem}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:640px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media(min-width:960px){ .grid{grid-template-columns:repeat(3,1fr)} }
+
+    .card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--card-shadow);display:flex;flex-direction:column;transition:transform .18s ease}
+    .card:hover{transform:translateY(-6px)}
+    .card img{width:100%;height:160px;object-fit:cover;display:block}
+    .card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+    .card h3{margin:0;font-size:1rem}
+    .card p{margin:0;color:var(--muted);font-size:.92rem}
+    .card-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid #f1f7ff;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(11,99,198,0.02))}
+    .btn{background:var(--blue);color:var(--white);border:0;padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:700}
+    .btn-ghost{background:transparent;border:1px solid #e6f0ff;padding:8px 10px;border-radius:10px;cursor:pointer;color:var(--blue)}
+    .badge{background:var(--orange);color:var(--white);padding:6px 8px;border-radius:999px;font-weight:700;font-size:.8rem}
+
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:.9rem}
   </style>
 </head>
 <body>
@@ -32,44 +53,42 @@
       <div class="logo">VMZ</div>
       <div>
         <h1>Destinos disponíveis</h1>
-        <p class="lead">Clique em "Reservar" no destino desejado para abrir o formulário de pré-reserva já preenchido.</p>
+        <p class="lead">Escolha um destino e toque em <strong>Reservar</strong> para preencher a pré-reserva.</p>
       </div>
     </header>
 
-    <section class="controls" style="margin-bottom:12px">
-      <div class="filters">
-        <label>
-          Filtrar por destino:
-          <select id="filterSelect">
-            <option value="">Todos</option>
-            <option>Praia Bela - PB</option>
-            <option>Porto de Galinhas - PE</option>
-            <option>Canoa Quebrada - CE</option>
-            <option>Pipa - RN</option>
-          </select>
-        </label>
+    <section class="controls" aria-label="Filtros">
+      <label>
+        Filtrar por destino
+        <select id="filterSelect">
+          <option value="">Todos</option>
+          <option>Praia Bela - PB</option>
+          <option>Porto de Galinhas - PE</option>
+          <option>Canoa Quebrada - CE</option>
+          <option>Pipa - RN</option>
+        </select>
+      </label>
 
-        <label>
-          Passageiros:
-          <input id="filterPassengers" type="number" min="1" value="1" style="width:80px"/>
-        </label>
+      <label>
+        Passageiros
+        <input id="filterPassengers" type="number" min="1" value="1" />
+      </label>
 
-        <label>
-          Data:
-          <input id="filterDate" type="date"/>
-        </label>
-      </div>
+      <label>
+        Data
+        <input id="filterDate" type="date" />
+      </label>
     </section>
 
     <section>
-      <div class="grid" id="destGrid">
-        <!-- cards gerados por JS -->
-      </div>
+      <div class="grid" id="destGrid" aria-live="polite"></div>
     </section>
+
+    <footer>© VMZ Turismo — Paleta: Azul • Laranja • Branco</footer>
   </main>
 
   <script>
-    // Lista de destinos (pode adicionar imagens locais substituindo os URLs)
+    // Destinos (substitua imagens se desejar)
     const DESTINOS = [
       { id:'praia-bela', title:'Praia Bela - PB', excerpt:'Areias brancas e mar calmo.', img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=60' },
       { id:'porto-galinhas', title:'Porto de Galinhas - PE', excerpt:'Piscinas naturais e jangadas.', img:'https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1200&q=60' },
@@ -82,14 +101,20 @@
     const filterPassengers = document.getElementById('filterPassengers');
     const filterDate = document.getElementById('filterDate');
 
-    function render(destinos) {
+    // Render cards
+    function render(destinos){
       grid.innerHTML = destinos.map(d => `
         <article class="card" data-id="${d.id}">
-          <img src="${d.img}" alt="${d.title}" loading="lazy"/>
-          <h3>${d.title}</h3>
-          <p>${d.excerpt}</p>
-          <div class="row">
-            <small style="color:var(--muted)">${d.id.toUpperCase()}</small>
+          <img src="${d.img}" alt="${d.title}" loading="lazy">
+          <div class="card-body">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <h3>${d.title}</h3>
+              <div class="badge">Top</div>
+            </div>
+            <p>${d.excerpt}</p>
+          </div>
+          <div class="card-footer">
+            <small style="color:var(--muted);font-size:.9rem">${d.id.toUpperCase()}</small>
             <div style="display:flex;gap:8px">
               <button class="btn" data-action="reservar" data-destino="${encodeURIComponent(d.title)}">Reservar</button>
               <button class="btn-ghost" data-action="detalhes" data-id="${d.id}">Detalhes</button>
@@ -102,24 +127,25 @@
 
     function attachListeners(){
       grid.querySelectorAll('[data-action="reservar"]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
           const destino = decodeURIComponent(btn.dataset.destino);
-          // pegar filtros opcionais
           const passageiros = filterPassengers.value || '1';
           const date = filterDate.value || '';
-          // construir query string para index.html
+          const currentFilter = filterSelect.value || '';
+          // Monta query string incluindo filtros para que reservas.html saiba de onde veio
           const params = new URLSearchParams();
           params.set('destino', destino);
           params.set('passageiros', passageiros);
           if (date) params.set('data', date);
-          // abrir index.html (mesma pasta) com params
+          if (currentFilter) params.set('filter', currentFilter);
+          // redireciona para o formulário que está em reservas.html
           window.location.href = `reservas.html?${params.toString()}`;
         });
       });
 
       grid.querySelectorAll('[data-action="detalhes"]').forEach(btn => {
         btn.addEventListener('click', () => {
-          alert('Detalhes do destino em breve. (Simulação)\nID: ' + btn.dataset.id);
+          alert('Em breve teremos mais detalhes sobre: ' + btn.dataset.id);
         });
       });
     }
@@ -130,8 +156,23 @@
       render(filtered);
     });
 
-    // inicial
-    render(DESTINOS);
+    // Se vier com query params (ex.: vindo de reservas.html "Voltar") preenche filtros
+    (function prefillFiltersFromQuery(){
+      const params = new URLSearchParams(window.location.search);
+      const passageiros = params.get('passageiros');
+      const date = params.get('data');
+      const filter = params.get('filter');
+      if (passageiros) filterPassengers.value = passageiros;
+      if (date) filterDate.value = date;
+      if (filter) {
+        // tenta selecionar opção
+        for(let i=0;i<filterSelect.options.length;i++){
+          if (filterSelect.options[i].text === filter){ filterSelect.selectedIndex = i; break; }
+        }
+      }
+      // render inicial
+      render(DESTINOS);
+    })();
   </script>
 </body>
 </html>
