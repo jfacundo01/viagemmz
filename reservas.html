@@ -1,145 +1,255 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pré-reserva — VMZ Turismo</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Reservar — VMZ Turismo</title>
+  <meta name="description" content="Formulário de pré-reserva — envia por WhatsApp para +55 83 8195-2443" />
   <style>
-    body { font-family: Inter, system-ui, Arial; background:#f7fafa; margin:0; padding:20px; color:#071229; }
-    .container{max-width:720px;margin:24px auto;background:#fff;padding:18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
-    h1{color:#0f766e;margin-top:0}
-    label{display:block;margin-top:10px;font-weight:600}
-    input,select,button{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef5;font-size:1rem}
-    .small{color:#64748b;font-size:.9rem;margin-top:6px}
-    button{background:#0f766e;color:#fff;border:0;margin-top:14px;cursor:pointer}
-    .preview{white-space:pre-wrap;background:#f1f7f6;padding:12px;border-radius:8px;margin-top:12px;border:1px dashed #e6eef5}
+    :root{
+      --blue:#0b63c6;
+      --orange:#ff7a18;
+      --white:#ffffff;
+      --muted:#6b7280;
+      --bg:linear-gradient(180deg,#f7fbff,#ffffff);
+      --card-shadow: 0 12px 30px rgba(11,99,198,0.06);
+      --radius:14px;
+      --maxw:920px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#071229;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--maxw);margin:18px auto;padding:16px}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--blue),#0851a8);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;box-shadow:var(--card-shadow)}
+    h1{margin:0;font-size:1.25rem}
+    p.lead{margin:4px 0 10px;color:var(--muted);font-size:.95rem}
+
+    .card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--card-shadow)}
+    label{display:block;margin-top:10px;font-weight:700;color:#0b1723}
+    input, select, button { width:100%; padding:12px; border-radius:10px; border:1px solid #e8f1ff; font-size:1rem; background:transparent }
+    .small{font-size:.9rem;color:var(--muted);margin-top:6px}
+
+    .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:800}
+    .btn-send{background:var(--orange);color:var(--white)}
+    .btn-open{background:var(--blue);color:var(--white)}
+    .btn-ghost{background:transparent;border:1px solid #e6f4ff;color:var(--blue)}
+
+    .preview{white-space:pre-wrap;background:#f8fbff;border:1px dashed #e6f4ff;padding:12px;border-radius:10px;min-height:140px;margin-top:12px}
+    .linkchip{font-size:.85rem;color:var(--muted);margin-top:8px;word-break:break-all}
+
+    .top-controls{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .back-link{background:transparent;border:0;color:var(--blue);font-weight:700;cursor:pointer;text-decoration:underline;padding:6px}
+    footer{margin-top:14px;text-align:center;color:var(--muted);font-size:.9rem}
+    @media(max-width:640px){ .top-controls{flex-direction:column;align-items:flex-start;gap:6px} }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Pré-reserva — VMZ Turismo</h1>
-    <p class="small">Mensagem será enviada para <strong>+55 83 8195-2443</strong>.</p>
+  <main class="wrap">
+    <header>
+      <div class="logo">VMZ</div>
+      <div>
+        <h1>Formulário de Pré-reserva</h1>
+        <p class="lead">A mensagem será enviada para <strong>+55 83 8195-2443</strong>. Verifique antes de enviar.</p>
+      </div>
+    </header>
 
-    <form id="reserveForm" onsubmit="return false;">
-      <label for="nome">Nome completo *</label>
-      <input id="nome" type="text" required />
+    <div class="top-controls">
+      <button id="btnBack" class="back-link">← Voltar à lista</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="background:var(--orange);color:#fff;padding:6px 10px;border-radius:8px;font-weight:700">Contato: +55 83 8195-2443</div>
+      </div>
+    </div>
 
-      <label for="telefone">Telefone (DDD + número) *</label>
-      <input id="telefone" type="tel" required />
+    <section class="card" aria-labelledby="formTitle">
+      <h2 id="formTitle" style="margin:0 0 8px 0;font-size:1.05rem">Dados</h2>
 
-      <label for="destino">Destino *</label>
-      <select id="destino" required>
-        <option value="">— selecione —</option>
-        <option>Praia Bela - PB</option>
-        <option>Porto de Galinhas - PE</option>
-        <option>Canoa Quebrada - CE</option>
-        <option>Pipa - RN</option>
-      </select>
+      <form id="reserveForm" onsubmit="return false;" autocomplete="off" novalidate>
+        <label for="nome">Nome completo *</label>
+        <input id="nome" type="text" required placeholder="Ex: João da Silva">
 
-      <label for="passageiros">Passageiros</label>
-      <input id="passageiros" type="number" min="1" value="1" />
+        <label for="telefone">Telefone (DDD + número) *</label>
+        <input id="telefone" type="tel" required placeholder="Ex: (83) 9 9999-9999">
 
-      <label for="data">Data prevista (opcional)</label>
-      <input id="data" type="date" />
+        <label for="destino">Destino *</label>
+        <input id="destino" type="text" readonly>
 
-      <button type="button" id="sendBtn">Enviar pelo WhatsApp</button>
+        <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
+          <div style="flex:1;min-width:140px">
+            <label for="passageiros">Passageiros</label>
+            <input id="passageiros" type="number" min="1" value="1">
+          </div>
+          <div style="flex:1;min-width:140px">
+            <label for="data">Data prevista (opcional)</label>
+            <input id="data" type="date">
+          </div>
+        </div>
 
-      <div id="preview" class="preview">A pré-visualização aparecerá aqui.</div>
-    </form>
-  </div>
+        <div class="actions">
+          <button id="btnSend" class="btn btn-send" type="button">Gerar & Enviar</button>
+          <button id="btnOpen" class="btn btn-open" type="button">Apenas Abrir WhatsApp</button>
+          <button id="btnCopy" class="btn btn-ghost" type="button">Copiar mensagem</button>
+        </div>
+
+        <div id="messageBox" class="preview">A pré-visualização aparecerá aqui.</div>
+        <div id="linkChip" class="linkchip">Link: —</div>
+      </form>
+    </section>
+
+    <footer>© VMZ Turismo — Azul • Laranja • Branco</footer>
+  </main>
 
   <script>
-    // Função que monta mensagem com quebras de linha reais
-    function montarMensagem({nome, telefone, destino, passageiros, data}) {
-      let msg = '✅ *Pré-reserva — VMZ Turismo*\n';
-      msg += '*Nome:* ' + nome + '\n';
-      msg += '*Destino:* ' + destino + '\n';
-      msg += '*Passageiros:* ' + passageiros + '\n';
-      if (data) msg += '*Data prevista:* ' + data + '\n';
-      msg += '*Contato informado:* ' + telefone + '\n\n';
-      msg += 'Por favor, confirmar disponibilidade e próximos passos.';
-      return msg;
-    }
+    // elementos
+    const nomeEl = document.getElementById('nome');
+    const telEl = document.getElementById('telefone');
+    const destEl = document.getElementById('destino');
+    const passEl = document.getElementById('passageiros');
+    const dataEl = document.getElementById('data');
 
-    // normalize phone to digits and add 55 if necessary
-    function normalizePhone(raw) {
-      if (!raw) return '';
-      const digits = raw.replace(/\\D/g,'');
+    const btnSend = document.getElementById('btnSend');
+    const btnOpen = document.getElementById('btnOpen');
+    const btnCopy = document.getElementById('btnCopy');
+    const btnBack = document.getElementById('btnBack');
+
+    const messageBox = document.getElementById('messageBox');
+    const linkChip = document.getElementById('linkChip');
+
+    // Número fixo (sem sinais) para wa.me
+    const FIX_NUMBER = '558381952443'; // +55 83 8195-2443
+
+    // Normaliza telefone (mantém dígitos e adiciona 55 se necessário)
+    function normalizePhoneDigits(raw){
+      if(!raw) return '';
+      const digits = raw.replace(/\D/g,'');
       if (digits.startsWith('55')) return digits;
       if (digits.length === 11 || digits.length === 10) return '55' + digits;
-      if (digits.length > 11) return digits;
       return digits;
     }
 
-    // leitura de query params e preenchimento
+    // Monta mensagem com quebras de linha reais (\n)
+    function montarMensagem({nome, telefone, destino, passageiros, data}){
+      const lines = [];
+      lines.push('✅ *Pré-reserva — VMZ Turismo*');
+      lines.push(`*Nome:* ${nome}`);
+      lines.push(`*Destino:* ${destino}`);
+      lines.push(`*Passageiros:* ${passageiros}`);
+      if (data) lines.push(`*Data prevista:* ${data}`);
+      lines.push(`*Contato informado:* ${telefone}`);
+      lines.push('');
+      lines.push('Por favor, confirmar disponibilidade e próximos passos.');
+      return lines.join('\n');
+    }
+
+    // Gera link wa.me com encodeURIComponent (mantendo \n)
+    function gerarLink(mensagem){
+      const encoded = encodeURIComponent(mensagem);
+      return `https://wa.me/${FIX_NUMBER}?text=${encoded}`;
+    }
+
+    // Atualiza preview e retorna objeto {mensagem,link}
+    function atualizarPreview(){
+      const nome = nomeEl.value.trim();
+      const telefone = telEl.value.trim();
+      const destino = destEl.value.trim();
+      const passageiros = passEl.value || '1';
+      const dataRaw = dataEl.value;
+      const data = dataRaw ? new Date(dataRaw).toLocaleDateString('pt-BR') : '';
+
+      if(!nome || !telefone || !destino){
+        messageBox.textContent = 'Preencha Nome, Telefone e Destino (vindo da lista) e clique em Gerar.';
+        linkChip.textContent = 'Link: —';
+        return null;
+      }
+
+      const mensagem = montarMensagem({nome, telefone, destino, passageiros, data});
+      const link = gerarLink(mensagem);
+
+      messageBox.textContent = mensagem;
+      linkChip.textContent = `Link: ${link}`;
+      return {mensagem, link};
+    }
+
+    // copia texto para clipboard (com fallback)
+    async function copiarTexto(text){
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Mensagem copiada para a área de transferência.');
+      } catch (err) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); alert('Mensagem copiada.'); }
+        catch (e) { alert('Não foi possível copiar automaticamente.'); }
+        document.body.removeChild(ta);
+      }
+    }
+
+    // Ler query params para prefill (destino, passageiros, data, filter)
     function prefillFromQuery(){
       const params = new URLSearchParams(window.location.search);
       const destino = params.get('destino');
       const passageiros = params.get('passageiros');
       const data = params.get('data');
-      if (destino) {
-        const sel = document.getElementById('destino');
-        // tenta selecionar opção que case com texto
-        for (let i=0;i<sel.options.length;i++){
-          if (sel.options[i].text === destino) { sel.selectedIndex = i; break; }
-        }
-      }
-      if (passageiros) document.getElementById('passageiros').value = passageiros;
-      if (data) document.getElementById('data').value = data;
-      // se veio com destino, foca no nome para agilizar preenchimento
-      if (destino) document.getElementById('nome').focus();
+
+      if(destino) destEl.value = destino;
+      if(passageiros) passEl.value = passageiros;
+      if(data) dataEl.value = data;
+      // focus no nome
+      if(destino) nomeEl.focus();
     }
 
-    // atualiza preview
-    function updatePreview(){
-      const nome = document.getElementById('nome').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
-      const destino = document.getElementById('destino').value;
-      const passageiros = document.getElementById('passageiros').value || '1';
-      const dataRaw = document.getElementById('data').value;
-      const data = dataRaw ? new Date(dataRaw).toLocaleDateString('pt-BR') : '';
-      if (!nome || !telefone || !destino) {
-        document.getElementById('preview').innerText = 'Preencha Nome, Telefone e Destino para ver a pré-visualização.';
-        return null;
-      }
-      const msg = montarMensagem({nome, telefone, destino, passageiros, data});
-      document.getElementById('preview').innerText = msg;
-      return msg;
+    // Botão Voltar: mantém filtros (passageiros/data/filter se vieram)
+    function buildBackUrl(){
+      const params = new URLSearchParams(window.location.search);
+      // Passa adiante os mesmos params que index.html entende: passageiros, data, filter
+      const passageiros = params.get('passageiros');
+      const data = params.get('data');
+      const filter = params.get('filter');
+      const qs = new URLSearchParams();
+      if(passageiros) qs.set('passageiros', passageiros);
+      if(data) qs.set('data', data);
+      if(filter) qs.set('filter', filter);
+      const s = qs.toString();
+      return s ? `index.html?${s}` : 'index.html';
     }
 
-    document.getElementById('sendBtn').addEventListener('click', () => {
-      const nome = document.getElementById('nome').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
-      const destino = document.getElementById('destino').value;
-      const passageiros = document.getElementById('passageiros').value || '1';
-      const dataRaw = document.getElementById('data').value;
-      const data = dataRaw ? new Date(dataRaw).toLocaleDateString('pt-BR') : '';
-
-      if (!nome || !telefone || !destino) {
-        alert('Por favor, preencha Nome, Telefone e Destino.');
-        return;
-      }
-
-      const mensagem = montarMensagem({nome, telefone, destino, passageiros, data});
-      document.getElementById('preview').innerText = mensagem;
-
-      // número fixo VMZ
-      const numero = '558381952443';
-      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');
+    // eventos
+    btnSend.addEventListener('click', () => {
+      const res = atualizarPreview();
+      if(!res) { alert('Preencha Nome, Telefone e Destino.'); return; }
+      // abre o wa.me com link (mensagem pronta). envio final é manual no app.
+      window.open(res.link, '_blank');
     });
 
-    // auto prefill se houver query params
+    btnOpen.addEventListener('click', () => {
+      const res = atualizarPreview();
+      if(!res) { alert('Gere a mensagem primeiro.'); return; }
+      window.open(res.link, '_blank');
+    });
+
+    btnCopy.addEventListener('click', async () => {
+      const res = atualizarPreview();
+      if(!res) { alert('Gere a mensagem primeiro.'); return; }
+      await copiarTexto(res.mensagem);
+    });
+
+    btnBack.addEventListener('click', () => {
+      window.location.href = buildBackUrl();
+    });
+
+    // Atualiza preview conforme digita
+    ['nome','telefone','passageiros','data'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', () => {
+        clearTimeout(window._t); window._t = setTimeout(()=> atualizarPreview(), 300);
+      });
+    });
+
+    // Inicial
     prefillFromQuery();
-
-    // atualizar preview enquanto digita (opcional)
-    ['nome','telefone','destino','passageiros','data'].forEach(id => {
-      document.getElementById(id).addEventListener('input', () => updatePreview());
-      document.getElementById(id).addEventListener('change', () => updatePreview());
-    });
-
-    // inicial preview
-    updatePreview();
+    atualizarPreview();
   </script>
 </body>
 </html>
