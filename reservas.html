@@ -27,22 +27,52 @@
 
     .card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--card-shadow)}
     label{display:block;margin-top:10px;font-weight:700;color:#0b1723}
-    input, select, button { width:100%; padding:12px; border-radius:10px; border:1px solid #e8f1ff; font-size:1rem; background:transparent }
+    input, select, button, textarea { width:100%; padding:12px; border-radius:10px; border:1px solid #e8f1ff; font-size:1rem; background:transparent }
+    textarea{min-height:80px; resize:vertical}
     .small{font-size:.9rem;color:var(--muted);margin-top:6px}
 
     .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:800}
     .btn-send{background:var(--orange);color:var(--white)}
-    .btn-open{background:var(--blue);color:var(--white)}
     .btn-ghost{background:transparent;border:1px solid #e6f4ff;color:var(--blue)}
 
-    .preview{white-space:pre-wrap;background:#f8fbff;border:1px dashed #e6f4ff;padding:12px;border-radius:10px;min-height:140px;margin-top:12px}
-    .linkchip{font-size:.85rem;color:var(--muted);margin-top:8px;word-break:break-all}
+    .preview{white-space:pre-wrap;background:#f8fbff;border:1px dashed #e6f4ff;padding:12px;border-radius:10px;min-height:120px;margin-top:12px}
+    .notice{margin-top:12px;padding:10px;border-radius:8px;background:#fff7ed;border:1px solid #ffe6cc;color:#6b4a00}
 
     .top-controls{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
     .back-link{background:transparent;border:0;color:var(--blue);font-weight:700;cursor:pointer;text-decoration:underline;padding:6px}
     footer{margin-top:14px;text-align:center;color:var(--muted);font-size:.9rem}
     @media(max-width:640px){ .top-controls{flex-direction:column;align-items:flex-start;gap:6px} }
+
+    /* estilos para inputs dinâmicos */
+    .additional-list{margin-top:10px;display:grid;gap:8px}
+    .additional-item label{font-weight:600;font-size:.95rem;margin-bottom:6px}
+
+    /* checkbox inline e mais próximo do texto */
+    .checkbox-row{
+      display:inline-flex;
+      align-items:center;
+      gap:10px; /* pequeno espaço entre checkbox e texto */
+      margin-top:12px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .checkbox-row input[type="checkbox"]{
+      width:18px;
+      height:18px;
+      margin:0;
+      accent-color: var(--orange); /* cor do checkbox nos navegadores que suportam */
+    }
+    .checkbox-row span{
+      font-weight:700;
+      color:#0b1723;
+      font-size:1rem;
+    }
+
+    @media(max-width:480px){
+      .checkbox-row{gap:8px}
+      .checkbox-row span{font-size:.98rem}
+    }
   </style>
 </head>
 <body>
@@ -51,7 +81,7 @@
       <div class="logo">VMZ</div>
       <div>
         <h1>Formulário de Pré-reserva</h1>
-        <p class="lead">Verifique todos os dados antes de enviar.</p>
+        <p class="lead">A mensagem será enviada para <strong>+55 83 8195-2443</strong>. Verifique antes de enviar.</p>
       </div>
     </header>
 
@@ -70,25 +100,43 @@
         <input id="telefone" type="tel" required placeholder="Ex: (83) 9 9999-9999">
 
         <label for="destino">Destino *</label>
-        <input id="destino" type="text" readonly>
+        <input id="destino" type="text" readonly aria-readonly="true">
 
         <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
           <div style="flex:1;min-width:140px">
             <label for="passageiros">Passageiros</label>
             <input id="passageiros" type="number" min="1" value="1">
+            <div class="small">Se maior que 1 serão gerados campos para inserir os nomes dos demais passageiros.</div>
           </div>
           <div style="flex:1;min-width:140px">
-            <label for="data">Data prevista (opcional)</label>
-            <input id="data" type="date">
+            <!-- espaço reservado (não existe data prevista) -->
           </div>
+        </div>
+
+        <!-- Container para inputs dinâmicos dos outros passageiros -->
+        <div id="additionalNames" class="additional-list" aria-live="polite"></div>
+
+        <!-- checkbox reformatado: label envolve o checkbox e o texto para aproximar e facilitar toque -->
+        <label class="checkbox-row" for="hasKid">
+          <input id="hasKid" type="checkbox" />
+          <span>Há criança de até 4 anos no grupo?</span>
+        </label>
+
+        <div id="kidInfoWrap" style="display:none;margin-top:8px">
+          <label for="kidName">Nome da criança (≤ 4 anos)</label>
+          <input id="kidName" type="text" placeholder="Nome da criança">
         </div>
 
         <div class="actions">
-          <button id="btnSend" class="btn btn-send" type="button">Gerar & Enviar</button>
+          <button id="btnSend" class="btn btn-send" type="button">Gerar & Enviar (WhatsApp)</button>
+          <button id="btnCopy" class="btn btn-ghost" type="button">Copiar mensagem</button>
         </div>
 
         <div id="messageBox" class="preview">A pré-visualização aparecerá aqui.</div>
-        <div id="linkChip" class="linkchip">Link: —</div>
+
+        <div class="notice" id="notice">
+          Observação: isto é uma <strong>pré-reserva</strong>. Para confirmar a reserva é necessário efetuar o pagamento da primeira parcela do pacote escolhido. Nossa equipe entrará em contato para orientar o pagamento e finalizar a reserva.
+        </div>
       </form>
     </section>
 
@@ -101,126 +149,188 @@
     const telEl = document.getElementById('telefone');
     const destEl = document.getElementById('destino');
     const passEl = document.getElementById('passageiros');
-    const dataEl = document.getElementById('data');
+    const additionalNamesWrap = document.getElementById('additionalNames');
+    const hasKidEl = document.getElementById('hasKid');
+    const kidInfoWrap = document.getElementById('kidInfoWrap');
+    const kidNameEl = document.getElementById('kidName');
 
     const btnSend = document.getElementById('btnSend');
+    const btnCopy = document.getElementById('btnCopy');
     const btnBack = document.getElementById('btnBack');
 
     const messageBox = document.getElementById('messageBox');
-    const linkChip = document.getElementById('linkChip');
 
-    // Número fixo (sem sinais) para wa.me
     const FIX_NUMBER = '558381952443'; // +55 83 8195-2443
 
-    // Monta mensagem com quebras de linha reais (\n)
-    function montarMensagem({nome, telefone, destino, passageiros, data}){
+    // cria inputs dinâmicos para os demais passageiros
+    function renderAdditionalInputs(count, existingValues = []) {
+      const others = Math.max(0, (Number(count) || 1) - 1);
+      additionalNamesWrap.innerHTML = '';
+      if (others <= 0) return;
+
+      for (let i = 0; i < others; i++) {
+        const idx = i + 1;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'additional-item';
+
+        const label = document.createElement('label');
+        label.setAttribute('for', `otherName${idx}`);
+        label.textContent = `Nome do passageiro ${idx + 1}`;
+
+        const input = document.createElement('input');
+        input.id = `otherName${idx}`;
+        input.type = 'text';
+        input.placeholder = `Nome completo do passageiro ${idx + 1}`;
+        input.value = existingValues[i] || '';
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+        additionalNamesWrap.appendChild(wrapper);
+
+        input.addEventListener('input', debouncedUpdatePreview);
+      }
+    }
+
+    function getAdditionalNames() {
+      const inputs = additionalNamesWrap.querySelectorAll('input[id^="otherName"]');
+      const values = Array.from(inputs).map(i => i.value.trim()).filter(v => v !== '');
+      return values;
+    }
+
+    function montarMensagem({nome, telefone, destino, passageiros, additionalNames, hasKid, kidName}) {
       const lines = [];
       lines.push('✅ *Pré-reserva — VMZ Turismo*');
-      lines.push(`*Nome:* ${nome}`);
+      lines.push(`*Nome do solicitante:* ${nome}`);
       lines.push(`*Destino:* ${destino}`);
-      lines.push(`*Passageiros:* ${passageiros}`);
-      if (data) lines.push(`*Data prevista:* ${data}`);
-      lines.push(`*Contato informado:* ${telefone}`);
+      lines.push(`*Passageiros (total):* ${passageiros}`);
+      if (additionalNames && additionalNames.length) {
+        lines.push(`*Nomes dos demais passageiros:*`);
+        additionalNames.forEach((n, i) => lines.push(`  ${i+1}. ${n}`));
+      }
+      if (hasKid) {
+        lines.push(`*Possui criança (≤4 anos):* Sim`);
+        if (kidName) lines.push(`*Nome da criança:* ${kidName}`);
+      } else {
+        lines.push(`*Possui criança (≤4 anos):* Não`);
+      }
       lines.push('');
-      lines.push('Por favor, confirmar disponibilidade e próximos passos.');
+      lines.push('Observação: isto é uma *PRÉ-RESERVA*. Para confirmar a reserva é necessário efetuar o pagamento da primeira parcela do pacote escolhido.');
+      lines.push('Por favor, responder com disponibilidade e instruções para pagamento.');
       return lines.join('\n');
     }
 
-    // Gera link wa.me com encodeURIComponent (mantendo \n)
-    function gerarLink(mensagem){
-      const encoded = encodeURIComponent(mensagem);
-      return `https://wa.me/${FIX_NUMBER}?text=${encoded}`;
-    }
-
-    // Atualiza preview e retorna objeto {mensagem,link}
-    function atualizarPreview(){
+    function atualizarPreview() {
       const nome = nomeEl.value.trim();
       const telefone = telEl.value.trim();
       const destino = destEl.value.trim();
       const passageiros = passEl.value || '1';
-      const dataRaw = dataEl.value;
-      const data = dataRaw ? new Date(dataRaw).toLocaleDateString('pt-BR') : '';
+      const additionalNames = getAdditionalNames();
+      const hasKid = hasKidEl.checked;
+      const kidName = kidNameEl.value.trim();
 
-      if(!nome || !telefone || !destino){
-        messageBox.textContent = 'Preencha Nome, Telefone e Destino (vindo da lista) e clique em Gerar.';
-        linkChip.textContent = 'Link: —';
+      if (!nome || !telefone || !destino) {
+        messageBox.textContent = 'Preencha Nome, Telefone e Destino e clique em "Gerar & Enviar".';
         return null;
       }
 
-      const mensagem = montarMensagem({nome, telefone, destino, passageiros, data});
-      const link = gerarLink(mensagem);
-
+      const mensagem = montarMensagem({nome, telefone, destino, passageiros, additionalNames, hasKid, kidName});
       messageBox.textContent = mensagem;
-      linkChip.textContent = `Link: ${link}`;
-      return {mensagem, link};
+      return mensagem;
     }
 
-    // copia texto para clipboard (com fallback)
-    async function copiarTexto(text){
+    function enviarWhats() {
+      const mensagem = atualizarPreview();
+      if (!mensagem) return;
+      const url = `https://wa.me/${FIX_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    }
+
+    async function copiarMensagem() {
+      const mensagem = atualizarPreview();
+      if (!mensagem) return;
       try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(mensagem);
         alert('Mensagem copiada para a área de transferência.');
-      } catch (err) {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); alert('Mensagem copiada.'); }
-        catch (e) { alert('Não foi possível copiar automaticamente.'); }
-        document.body.removeChild(ta);
+      } catch (e) {
+        alert('Não foi possível copiar automaticamente. Você pode selecionar e copiar manualmente.');
       }
     }
 
-    // Ler query params para prefill (destino, passageiros, data, filter)
-    function prefillFromQuery(){
-      const params = new URLSearchParams(window.location.search);
-      const destino = params.get('destino');
-      const passageiros = params.get('passageiros');
-      const data = params.get('data');
-
-      if(destino) destEl.value = destino;
-      if(passageiros) passEl.value = passageiros;
-      if(data) dataEl.value = data;
-      // focus no nome
-      if(destino) nomeEl.focus();
-    }
-
-    // Botão Voltar: mantém filtros (passageiros/data/filter se vieram)
-    function buildBackUrl(){
-      const params = new URLSearchParams(window.location.search);
-      const passageiros = params.get('passageiros');
-      const data = params.get('data');
-      const filter = params.get('filter');
-      const qs = new URLSearchParams();
-      if(passageiros) qs.set('passageiros', passageiros);
-      if(data) qs.set('data', data);
-      if(filter) qs.set('filter', filter);
-      const s = qs.toString();
-      return s ? `index.html?${s}` : 'index.html';
+    let _debounceTimer = null;
+    function debouncedUpdatePreview() {
+      clearTimeout(_debounceTimer);
+      _debounceTimer = setTimeout(atualizarPreview, 220);
     }
 
     // eventos
+    passEl.addEventListener('input', () => {
+      const value = Number(passEl.value || 1);
+      const existing = getAdditionalNames();
+      renderAdditionalInputs(value, existing);
+      atualizarPreview();
+    });
+
+    // checkbox — a label envolve o checkbox, portanto escuta mudança normalmente
+    hasKidEl.addEventListener('change', () => {
+      kidInfoWrap.style.display = hasKidEl.checked ? 'block' : 'none';
+      if (!hasKidEl.checked) kidNameEl.value = '';
+      debouncedUpdatePreview();
+    });
+
+    [nomeEl, telEl, passEl, kidNameEl].forEach(el => {
+      el && el.addEventListener('input', debouncedUpdatePreview);
+    });
+
     btnSend.addEventListener('click', () => {
-      const res = atualizarPreview();
-      if(!res) { alert('Preencha Nome, Telefone e Destino.'); return; }
-      // abre o wa.me com link (mensagem pronta). envio final é manual no app.
-      window.open(res.link, '_blank');
+      const nome = nomeEl.value.trim();
+      const telefone = telEl.value.trim();
+      const destino = destEl.value.trim();
+      if (!nome || !telefone || !destino) {
+        alert('Preencha Nome, Telefone e Destino antes de enviar.');
+        return;
+      }
+      enviarWhats();
+    });
+
+    btnCopy.addEventListener('click', () => {
+      copiarMensagem();
     });
 
     btnBack.addEventListener('click', () => {
-      window.location.href = buildBackUrl();
+      const params = new URLSearchParams(window.location.search);
+      const passageiros = params.get('passageiros');
+      const filter = params.get('filter');
+      const qs = new URLSearchParams();
+      if (passageiros) qs.set('passageiros', passageiros);
+      if (filter) qs.set('filter', filter);
+      const s = qs.toString();
+      window.location.href = s ? `index.html?${s}` : 'index.html';
     });
 
-    // Atualiza preview conforme digita
-    ['nome','telefone','passageiros','data'].forEach(id => {
-      document.getElementById(id)?.addEventListener('input', () => {
-        clearTimeout(window._t); window._t = setTimeout(()=> atualizarPreview(), 300);
-      });
-    });
+    (function prefillFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const destino = params.get('destino');
+      const passageiros = params.get('passageiros');
+      const moreNames = params.get('moreNames');
+      const kid = params.get('kid');
+      const kidName = params.get('kidName');
 
-    // Inicial
-    prefillFromQuery();
-    atualizarPreview();
+      if (destino) destEl.value = destino;
+      if (passageiros) passEl.value = passageiros;
+      const existingValues = [];
+      if (moreNames) {
+        if (moreNames.indexOf('||') !== -1) existingValues.push(...moreNames.split('||').map(s => decodeURIComponent(s)));
+        else existingValues.push(...moreNames.split(',').map(s => decodeURIComponent(s).trim()));
+      }
+      renderAdditionalInputs(passEl.value || 1, existingValues);
+      if (kid === '1') {
+        hasKidEl.checked = true;
+        kidInfoWrap.style.display = 'block';
+        if (kidName) kidNameEl.value = decodeURIComponent(kidName);
+      }
+      if (destino) nomeEl.focus();
+      atualizarPreview();
+    })();
   </script>
 </body>
 </html>
