@@ -15,7 +15,7 @@
     "details": "Um pacote relaxante com hospedagem em resort 3 noites, traslados e passeios locais.",
     "inclusos": ["Hotel beira-mar em ponta negra", "Guia Turistico", "Day Use em pureza", "3 Café da manhã", "Brinde VMZ."],
     "price": "R$ 630,00",
-    "img": "https://files.cercomp.ufg.br/weby/up/440/o/paginaEmConstrucao.png"
+    "img": "/img/natal.jpeg"
   },
     {
     "id": "natal all-inclusive",
@@ -54,6 +54,7 @@
     "img": "https://files.cercomp.ufg.br/weby/up/440/o/paginaEmConstrucao.png"
   }
 ]
+
 
 
 
