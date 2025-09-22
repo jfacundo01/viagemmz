@@ -1,0 +1,56 @@
+[
+  {
+    "id": "reveillon",
+    "title": "Revéillon - Fortaleza",
+    "excerpt": "Bate e Volta para o maior Réveillon do nordeste.",
+    "details": "Um pacote relaxante com hospedagem em resort 3 noites, traslados e passeios locais.",
+    "inclusos": ["Água mineral na ida", "Virada do ano na praia de Iracema beira-mar", "Feriado dia 1º na praia do futuro."],
+    "price": "R$ 240,00",
+    "img": "https://files.cercomp.ufg.br/weby/up/440/o/paginaEmConstrucao.png"
+  },    
+  {
+    "id": "natal",
+    "title": "Natal - RN",
+    "excerpt": "3 dias e 2 noites curtindo Natal + Pureza + Pipa no Rio Grande do Norte.",
+    "details": "Um pacote relaxante com hospedagem em resort 3 noites, traslados e passeios locais.",
+    "inclusos": ["Hotel beira-mar em ponta negra", "Guia Turistico", "Day Use em pureza", "3 Café da manhã", "Brinde VMZ."],
+    "price": "R$ 630,00",
+    "img": "/img/natal.jpeg"
+  },
+    {
+    "id": "natal all-inclusive",
+    "title": "Natal - All Inclusive",
+    "excerpt": "Dia dos pais 2026 hotel all inclusive no Rio Grande do Norte.",
+    "details": "Um pacote relaxante com hospedagem em resort 3 noites, traslados e passeios locais.",
+    "inclusos": ["Hospedagem 3 noites", "Translado", "Day Use em pureza", "Café da manhã incluso"],
+    "price": "R$ 1500,00",
+    "img": "https://files.cercomp.ufg.br/weby/up/440/o/paginaEmConstrucao.png"
+  },
+  {
+    "id": "porto-galinhas",
+    "title": "Porto de Galinhas - PE",
+    "excerpt": "Piscinas naturais e jangadas.",
+    "details": "Pacote completo com passeio às piscinas naturais e dia de lazer em jangadas tradicionais.",
+    "inclusos": ["Hospedagem 2 noites", "Passeio às piscinas naturais", "Café da manhã"],
+    "price": "R$ 800,00",
+    "img": "https://files.cercomp.ufg.br/weby/up/440/o/paginaEmConstrucao.png"
+  },
+  {
+    "id": "canoa-quebrada",
+    "title": "Canoa Quebrada - CE",
+    "excerpt": "Dunas e vida noturna animada.",
+    "details": "Pacote com visita às dunas, buggy opcional e roteiro noturno com guias locais.",
+    "inclusos": ["Hospedagem 3 noites", "Passeio de buggy (opcional)", "Traslados", "Café da manhã"],
+    "price": "R$ 1.599",
+    "img": "https://files.cercomp.ufg.br/weby/up/440/o/paginaEmConstrucao.png"
+  },
+  {
+    "id": "maceió",
+    "title": "Maceió - AL",
+    "excerpt": "Dunas e vida noturna animada.",
+    "details": "Pacote com visita às dunas, buggy opcional e roteiro noturno com guias locais.",
+    "inclusos": ["Hospedagem 3 noites", "Passeio de buggy (opcional)", "Traslados", "Café da manhã"],
+    "price": "R$ 1.599",
+    "img": "https://files.cercomp.ufg.br/weby/up/440/o/paginaEmConstrucao.png"
+  }
+]
