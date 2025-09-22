@@ -1,178 +1,545 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>VMZ Turismo — Destinos</title>
-  <meta name="description" content="Tela principal — destinos disponíveis. Clique em Reservar para abrir o formulário."/>
-  <style>
-    :root{
-      --blue:#0b63c6;
-      --orange:#ff7a18;
-      --white:#ffffff;
-      --muted:#6b7280;
-      --bg:linear-gradient(180deg,#f5f8ff 0%, #ffffff 100%);
-      --card-shadow: 0 12px 30px rgba(11,99,198,0.06);
-      --radius:14px;
-      --maxw:1100px;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:#071229;-webkit-font-smoothing:antialiased}
-    .wrap{max-width:var(--maxw);margin:18px auto;padding:16px}
-    header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--blue),#0851a8);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;box-shadow:var(--card-shadow)}
-    h1{margin:0;font-size:1.25rem}
-    p.lead{margin:4px 0 10px;color:var(--muted);font-size:.95rem}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>VMZ Turismo — Destinos</title>
+    <meta name="description"
+        content="Tela principal — destinos disponíveis. Clique em Reservar para abrir o formulário." />
+    <style>
+        :root {
+            --blue: #0b63c6;
+            --orange: #ff7a18;
+            --white: #ffffff;
+            --muted: #6b7280;
+            --bg: linear-gradient(180deg, #f5f8ff 0%, #ffffff 100%);
+            --card-shadow: 0 12px 30px rgba(11, 99, 198, 0.06);
+            --radius: 14px;
+            --maxw: 1100px;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        }
 
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-    .controls label{font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
-    .controls select, .controls input{padding:10px;border-radius:10px;border:1px solid #eef5ff;background:var(--white);font-size:.95rem}
+        * {
+            box-sizing: border-box
+        }
 
-    .grid{display:grid;grid-template-columns:1fr;gap:14px}
-    @media(min-width:640px){ .grid{grid-template-columns:repeat(2,1fr)} }
-    @media(min-width:960px){ .grid{grid-template-columns:repeat(3,1fr)} }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #071229;
+            -webkit-font-smoothing: antialiased
+        }
 
-    .card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--card-shadow);display:flex;flex-direction:column;transition:transform .18s ease}
-    .card:hover{transform:translateY(-6px)}
-    .card img{width:100%;height:160px;object-fit:cover;display:block}
-    .card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
-    .card h3{margin:0;font-size:1rem}
-    .card p{margin:0;color:var(--muted);font-size:.92rem}
-    .card-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid #f1f7ff;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(11,99,198,0.02))}
-    .btn{background:var(--blue);color:var(--white);border:0;padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:700}
-    .btn-ghost{background:transparent;border:1px solid #e6f0ff;padding:8px 10px;border-radius:10px;cursor:pointer;color:var(--blue)}
-    .badge{background:var(--orange);color:var(--white);padding:6px 8px;border-radius:999px;font-weight:700;font-size:.8rem}
+        .wrap {
+            max-width: var(--maxw);
+            margin: 18px auto;
+            padding: 16px
+        }
 
-    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:.9rem}
-  </style>
+        header {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--blue), #0851a8);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+            box-shadow: var(--card-shadow)
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.25rem
+        }
+
+        p.lead {
+            margin: 4px 0 10px;
+            color: var(--muted);
+            font-size: .95rem
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px
+        }
+
+        .controls label {
+            font-size: .85rem;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .controls select,
+        .controls input {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #eef5ff;
+            background: var(--white);
+            font-size: .95rem
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px
+        }
+
+        @media(min-width:640px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(min-width:960px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform .18s ease
+        }
+
+        .card:hover {
+            transform: translateY(-6px)
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+            background: #eef6ff
+        }
+
+        .card-body {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1rem
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .92rem
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-top: 1px solid #f1f7ff;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(11, 99, 198, 0.02))
+        }
+
+        .btn {
+            background: var(--blue);
+            color: var(--white);
+            border: 0;
+            padding: 9px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid #e6f0ff;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--blue)
+        }
+
+        .badge {
+            background: var(--orange);
+            color: var(--white);
+            padding: 6px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .8rem
+        }
+
+        footer {
+            margin-top: 18px;
+            text-align: center;
+            color: var(--muted);
+            font-size: .9rem
+        }
+
+        /* DETAIL PANEL (sem imagem) */
+        .detail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: rgba(0, 0, 0, 0.45);
+            justify-content: center;
+            align-items: flex-end;
+            padding: 16px;
+        }
+
+        .detail-overlay.show {
+            display: flex
+        }
+
+        .detail-card {
+            width: 100%;
+            max-width: 720px;
+            background: var(--white);
+            border-radius: 12px 12px 8px 8px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transform: translateY(8px);
+            animation: popUp .22s ease;
+        }
+
+        .detail-body {
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .detail-title {
+            margin: 0;
+            color: var(--blue);
+            font-size: 1.2rem
+        }
+
+        .detail-desc {
+            margin: 0;
+            color: var(--muted);
+            font-size: .95rem;
+            line-height: 1.45
+        }
+
+        .detail-inclusos {
+            margin: 0;
+            padding-left: 18px;
+            color: #0b1723
+        }
+
+        .detail-price {
+            font-size: 2.15rem;
+            font-weight: 800;
+            color: var(--orange)
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 6px
+        }
+
+        .btn-reserve {
+            background: var(--orange);
+            color: var(--white);
+            border: 0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 800
+        }
+
+        .btn-close {
+            background: transparent;
+            border: 0;
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 700
+        }
+
+        @keyframes popUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @media(min-width:900px) {
+            .detail-overlay {
+                align-items: center
+            }
+
+            .detail-card {
+                border-radius: 12px
+            }
+
+            .detail-body {
+                grid-template-columns: 1fr 260px;
+                gap: 18px
+            }
+
+            .detail-actions {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-end
+            }
+        }
+
+        @media(max-width:480px) {
+            .detail-body {
+                padding: 12px
+            }
+
+            .detail-price {
+                font-size: 1.05rem
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <main class="wrap">
-    <header>
-      <div class="logo">VMZ</div>
-      <div>
-        <h1>Destinos disponíveis</h1>
-        <p class="lead">Escolha um destino e toque em <strong>Reservar</strong> para preencher a pré-reserva.</p>
-      </div>
-    </header>
+    <main class="wrap">
+        <header>
+            <div class="logo">VMZ</div>
+            <div>
+                <h1>Destinos disponíveis</h1>
+                <p class="lead">Escolha um destino e toque em <strong>Reservar</strong> para preencher a pré-reserva.
+                </p>
+            </div>
+        </header>
 
-    <section class="controls" aria-label="Filtros">
-      <label>
-        Filtrar por destino
-        <select id="filterSelect">
-          <option value="">Todos</option>
-          <option>Praia Bela - PB</option>
-          <option>Porto de Galinhas - PE</option>
-          <option>Canoa Quebrada - CE</option>
-          <option>Pipa - RN</option>
-        </select>
-      </label>
+        <section class="controls" aria-label="Filtros">
+            <label>
+                Filtrar por destino
+                <select id="filterSelect">
+                    <option value="">Todos</option>
+                    <!-- opções serão geradas dinamicamente -->
+                </select>
+            </label>
+        </section>
 
-      <label>
-        Passageiros
-        <input id="filterPassengers" type="number" min="1" value="1" />
-      </label>
+        <section>
+            <div class="grid" id="destGrid" aria-live="polite"></div>
+        </section>
 
-      <label>
-        Data
-        <input id="filterDate" type="date" />
-      </label>
-    </section>
+        <footer>© VMZ Turismo - JR.Dev</footer>
+    </main>
 
-    <section>
-      <div class="grid" id="destGrid" aria-live="polite"></div>
-    </section>
+    <!-- Painel de detalhes (sem imagem) -->
+    <div id="detailOverlay" class="detail-overlay" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+        <article class="detail-card" id="detailCard">
+            <div class="detail-body">
+                <div>
+                    <h2 id="detailTitle" class="detail-title"></h2>
+                    <p id="detailDesc" class="detail-desc"></p>
 
-      <footer>© VMZ Turismo - JR.Dev</footer>
-  </main>
+                    <h4 style="margin:8px 0 6px 0">Inclusos no pacote</h4>
+                    <ul id="detailInclusos" class="detail-inclusos"></ul>
+                </div>
 
-  <script>
-    // Destinos (substitua imagens se desejar)
-    const DESTINOS = [
-      { id:'praia-bela', title:'Praia Bela - PB', excerpt:'Areias brancas e mar calmo.', img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=60' },
-      { id:'porto-galinhas', title:'Porto de Galinhas - PE', excerpt:'Piscinas naturais e jangadas.', img:'https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1200&q=60' },
-      { id:'canoa-quebrada', title:'Canoa Quebrada - CE', excerpt:'Dunas e vida noturna animada.', img:'https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1200&q=60' },
-      { id:'pipa', title:'Pipa - RN', excerpt:'Praias, falésias e golfinhos.', img:'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1200&q=60' }
-    ];
+                <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end;">
+                    <div style="text-align:right">
+                        <div class="detail-price" id="detailPrice"></div>
+                        <div style="font-size:.88rem;color:var(--muted);margin-top:6px">Valor por pessoa.</div>
+                    </div>
 
-    const grid = document.getElementById('destGrid');
-    const filterSelect = document.getElementById('filterSelect');
-    const filterPassengers = document.getElementById('filterPassengers');
-    const filterDate = document.getElementById('filterDate');
+                    <div class="detail-actions" style="width:100%">
+                        <button id="detailReserveBtn" class="btn-reserve">Reservar</button>
+                        <button id="detailCloseBtn" class="btn-close">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
 
-    // Render cards
-    function render(destinos){
-      grid.innerHTML = destinos.map(d => `
-        <article class="card" data-id="${d.id}">
-          <img src="${d.img}" alt="${d.title}" loading="lazy">
+    <script>
+        // Dados dos destinos — agora com propriedade "img" explicitando o arquivo (incluindo extensão)
+        let DESTINOS = []; // será preenchido via fetch
+
+        // Função para carregar dados do JSON
+        async function carregarDestinos() {
+            try {
+                const response = await fetch('/dados.json'); // caminho relativo ao HTML
+                if (!response.ok) throw new Error('Erro ao carregar dados.json');
+                DESTINOS = await response.json();
+                populateFilterOptions();
+                render(DESTINOS);
+            } catch (err) {
+                console.error(err);
+                grid.innerHTML = '<p style="color:red">Não foi possível carregar os destinos.</p>';
+            }
+        }
+
+        // inicializa
+        carregarDestinos();
+
+        const grid = document.getElementById('destGrid');
+        const filterSelect = document.getElementById('filterSelect');
+
+        const detailOverlay = document.getElementById('detailOverlay');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailDesc = document.getElementById('detailDesc');
+        const detailInclusos = document.getElementById('detailInclusos');
+        const detailPrice = document.getElementById('detailPrice');
+        const detailReserveBtn = document.getElementById('detailReserveBtn');
+        const detailCloseBtn = document.getElementById('detailCloseBtn');
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // popula o select de filtro com as opções vindas do array DESTINOS (value = id, text = title)
+        function populateFilterOptions() {
+            // já existe a opção "Todos" no HTML; aqui adicionamos as opções dinâmicas
+            DESTINOS.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.id;        // value = id (ex.: 'natal')
+                opt.textContent = d.title; // texto visível = título
+                filterSelect.appendChild(opt);
+            });
+
+            // Se houver ?filter=<id> na URL, seleciona a opção correspondente
+            const params = new URLSearchParams(window.location.search);
+            const filterParam = params.get('filter');
+            if (filterParam) {
+                filterSelect.value = filterParam;
+            }
+        }
+
+        // Renderiza cards na grade (usa DESTINOS[].img quando disponível)
+        function render(destinos) {
+            grid.innerHTML = destinos.map(d => {
+                const imgSrc = d.img ? d.img : `/img/${d.id}.jpg`;
+                return `
+        <article class="card" data-id="${escapeHtml(d.id)}" data-title="${escapeHtml(d.title)}" data-img="${escapeHtml(imgSrc)}">
+          <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(d.title)}" loading="lazy">
           <div class="card-body">
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <h3>${d.title}</h3>
+              <h3>${escapeHtml(d.title)}</h3>
               <div class="badge">Top</div>
             </div>
-            <p>${d.excerpt}</p>
+            <p>${escapeHtml(d.excerpt)}</p>
           </div>
           <div class="card-footer">
-            <small style="color:var(--muted);font-size:.9rem">${d.id.toUpperCase()}</small>
+            <small style="color:var(--muted);font-size:.9rem">${escapeHtml(d.id.toUpperCase())}</small>
             <div style="display:flex;gap:8px">
-              <button class="btn" data-action="reservar" data-destino="${encodeURIComponent(d.title)}">Reservar</button>
-              <button class="btn-ghost" data-action="detalhes" data-id="${d.id}">Detalhes</button>
+              <button class="btn" data-action="reservar" data-destid="${encodeURIComponent(d.id)}" data-desttitle="${encodeURIComponent(d.title)}">Reservar</button>
+              <button class="btn-ghost" data-action="detalhes" data-destid="${encodeURIComponent(d.id)}">Detalhes</button>
             </div>
           </div>
-        </article>
-      `).join('');
-      attachListeners();
-    }
-
-    function attachListeners(){
-      grid.querySelectorAll('[data-action="reservar"]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const destino = decodeURIComponent(btn.dataset.destino);
-          const passageiros = filterPassengers.value || '1';
-          const date = filterDate.value || '';
-          const currentFilter = filterSelect.value || '';
-          // Monta query string incluindo filtros para que reservas.html saiba de onde veio
-          const params = new URLSearchParams();
-          params.set('destino', destino);
-          params.set('passageiros', passageiros);
-          if (date) params.set('data', date);
-          if (currentFilter) params.set('filter', currentFilter);
-          // redireciona para o formulário que está em reservas.html
-          window.location.href = `reservas.html?${params.toString()}`;
-        });
-      });
-
-      grid.querySelectorAll('[data-action="detalhes"]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          alert('Em breve teremos mais detalhes sobre: ' + btn.dataset.id);
-        });
-      });
-    }
-
-    filterSelect.addEventListener('change', () => {
-      const val = filterSelect.value;
-      const filtered = val ? DESTINOS.filter(d => d.title === val) : DESTINOS;
-      render(filtered);
-    });
-
-    // Se vier com query params (ex.: vindo de reservas.html "Voltar") preenche filtros
-    (function prefillFiltersFromQuery(){
-      const params = new URLSearchParams(window.location.search);
-      const passageiros = params.get('passageiros');
-      const date = params.get('data');
-      const filter = params.get('filter');
-      if (passageiros) filterPassengers.value = passageiros;
-      if (date) filterDate.value = date;
-      if (filter) {
-        // tenta selecionar opção
-        for(let i=0;i<filterSelect.options.length;i++){
-          if (filterSelect.options[i].text === filter){ filterSelect.selectedIndex = i; break; }
+        </article>`;
+            }).join('');
+            attachListeners();
         }
-      }
-      // render inicial
-      render(DESTINOS);
-    })();
-  </script>
+
+        function attachListeners() {
+            // botão Reservar do card
+            grid.querySelectorAll('[data-action="reservar"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const destId = decodeURIComponent(btn.dataset.destid);
+                    const destTitle = decodeURIComponent(btn.dataset.desttitle);
+                    const passageiros = getPassengersFromQuery(); // pega de query ou default '1'
+                    const params = new URLSearchParams();
+                    params.set('destino', destTitle);
+                    params.set('passageiros', passageiros);
+                    const currentFilter = filterSelect.value || '';
+                    if (currentFilter) params.set('filter', currentFilter);
+                    window.location.href = `reservas.html?${params.toString()}`;
+                });
+            });
+
+            // botão Detalhes -> abre painel com dados completos (sem imagem)
+            grid.querySelectorAll('[data-action="detalhes"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const destId = decodeURIComponent(btn.dataset.destid);
+                    const info = DESTINOS.find(d => d.id === destId);
+                    if (!info) return;
+
+                    // preenche conteúdo
+                    detailTitle.textContent = info.title;
+                    detailDesc.textContent = info.details || info.excerpt;
+                    detailInclusos.innerHTML = (info.inclusos || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+                    detailPrice.textContent = info.price || '';
+
+                    // action do botão reservar do painel
+                    detailReserveBtn.onclick = () => {
+                        const passageiros = getPassengersFromQuery();
+                        const params = new URLSearchParams();
+                        params.set('destino', info.title);
+                        params.set('passageiros', passageiros);
+                        const currentFilter = filterSelect.value || '';
+                        if (currentFilter) params.set('filter', currentFilter);
+                        window.location.href = `reservas.html?${params.toString()}`;
+                    };
+
+                    // abre painel
+                    detailOverlay.classList.add('show');
+                    detailReserveBtn.focus();
+                });
+            });
+        }
+
+        // obtém número de passageiros a partir da query string (se existir) ou 1 por padrão
+        function getPassengersFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const p = params.get('passageiros');
+            const n = Number(p);
+            return (Number.isInteger(n) && n > 0) ? String(n) : '1';
+        }
+
+        // Fechar painel
+        function fecharDetalhe() {
+            detailOverlay.classList.remove('show');
+        }
+
+        // eventos fechar
+        detailCloseBtn.addEventListener('click', fecharDetalhe);
+        detailOverlay.addEventListener('click', (e) => {
+            if (e.target === detailOverlay) fecharDetalhe();
+        });
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharDetalhe(); });
+
+        // filtro por select (agora compara por id)
+        filterSelect.addEventListener('change', () => {
+            const val = filterSelect.value;
+            const filtered = val ? DESTINOS.filter(d => d.id === val) : DESTINOS;
+            render(filtered);
+        });
+
+        // inicializa select e render
+        (function init() {
+            populateFilterOptions();
+            render(DESTINOS);
+        })();
+    </script>
 </body>
+
 </html>
