@@ -385,7 +385,7 @@
         // Função para carregar dados do JSON
         async function carregarDestinos() {
             try {
-                const response = await fetch('/dados.json'); // caminho relativo ao HTML
+                const response = await fetch('data/dados.json'); // caminho relativo ao HTML
                 if (!response.ok) throw new Error('Erro ao carregar dados.json');
                 DESTINOS = await response.json();
                 populateFilterOptions();
