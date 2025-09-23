@@ -563,8 +563,9 @@
                 statusMessage.className = 'status success';
 
                 // abre WhatsApp com a mensagem curta solicitada
-                const mensagemWhatsapp = 'pré-reserva feita, quero seguir com o pagamento!';
+                const mensagemWhatsapp = `pré-reserva feita para *${destino}*, quero seguir com o pagamento!`;
                 abrirWhats(mensagemWhatsapp);
+
 
             } else {
                 statusMessage.textContent = 'Erro ao salvar pré-reserva: ' + (result.message || 'verifique a conexão');
