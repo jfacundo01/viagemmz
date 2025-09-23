@@ -347,21 +347,44 @@
         }
 
         // Envia dados para Google Apps Script (que grava no Sheets)
+        // Agora usando URLSearchParams (form-urlencoded) para evitar preflight CORS com Apps Script
         async function enviarParaSheets(dados) {
             try {
+                // prepara payload: converte arrays para string
+                const payload = {
+                    nome: dados.nome || '',
+                    telefone: dados.telefone || '',
+                    destino: dados.destino || '',
+                    passageiros: dados.passageiros || '',
+                    additionalNames: Array.isArray(dados.additionalNames) ? dados.additionalNames.join('||') : (dados.additionalNames || ''),
+                    hasKid: dados.hasKid || '',
+                    kidName: dados.kidName || '',
+                    timestamp: dados.timestamp || new Date().toISOString()
+                    // se você usa secret/token, adicione aqui: secret: 'SEU_TOKEN'
+                };
+
+                const body = new URLSearchParams();
+                Object.keys(payload).forEach(k => body.append(k, payload[k]));
+
                 const response = await fetch(SPREADSHEET_URL, {
                     method: 'POST',
-                    body: JSON.stringify(dados),
-                    headers: { 'Content-Type': 'application/json' }
+                    body: body,
+                    // NÃO setar headers Content-Type manualmente — deixa o browser definir
                 });
 
-                // Apps Script retorna JSON — usamos .json()
-                const result = await response.json();
+                // Se status não OK, tentamos ler texto para debug
+                if (!response.ok) {
+                    const txt = await response.text().catch(() => '');
+                    return { ok: false, message: `HTTP ${response.status} ${response.statusText} ${txt}` };
+                }
 
+                // Apps Script retorna JSON mesmo para form posts
+                const result = await response.json().catch(() => null);
                 if (result && (result.result === 'success' || result.status === 'success')) {
                     return { ok: true, message: result.message || 'Gravado com sucesso' };
                 } else {
-                    return { ok: false, message: result.message || JSON.stringify(result) };
+                    // se result for null ou não indicar sucesso, devolve erro com conteúdo
+                    return { ok: false, message: result ? (result.message || JSON.stringify(result)) : 'Resposta inválida do servidor' };
                 }
             } catch (err) {
                 console.error('Erro na requisição para o Sheets:', err);
