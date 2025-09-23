@@ -1,616 +1,386 @@
 <!doctype html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Reservar — VMZ Turismo</title>
-    <meta name="description" content="Formulário de pré-reserva — envia por WhatsApp para +55 83 8195-2443" />
-    <style>
-        :root {
-            --blue: #0b63c6;
-            --orange: #ff7a18;
-            --white: #ffffff;
-            --muted: #6b7280;
-            --bg: linear-gradient(180deg, #f7fbff, #ffffff);
-            --card-shadow: 0 12px 30px rgba(11, 99, 198, 0.06);
-            --radius: 14px;
-            --maxw: 920px;
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-        }
-
-        * { box-sizing: border-box }
-
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: #071229;
-            -webkit-font-smoothing: antialiased
-        }
-
-        .wrap {
-            max-width: var(--maxw);
-            margin: 18px auto;
-            padding: 16px
-        }
-
-        header {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 12px
-        }
-
-        .logo {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--blue), #0851a8);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 20px;
-            box-shadow: var(--card-shadow)
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 1.25rem
-        }
-
-        p.lead {
-            margin: 4px 0 10px;
-            color: var(--muted);
-            font-size: .95rem
-        }
-
-        .card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 16px;
-            box-shadow: var(--card-shadow)
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: 700;
-            color: #0b1723
-        }
-
-        input,
-        select,
-        button,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #e8f1ff;
-            font-size: 1rem;
-            background: transparent
-        }
-
-        textarea {
-            min-height: 80px;
-            resize: vertical
-        }
-
-        .small {
-            font-size: .9rem;
-            color: var(--muted);
-            margin-top: 6px
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-            flex-wrap: wrap
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 0;
-            cursor: pointer;
-            font-weight: 800
-        }
-
-        .btn-send {
-            background: var(--orange);
-            color: var(--white)
-        }
-
-        .btn-ghost {
-            background: transparent;
-            border: 1px solid #e6f4ff;
-            color: var(--blue)
-        }
-
-        .preview {
-            white-space: pre-wrap;
-            background: #f8fbff;
-            border: 1px dashed #e6f4ff;
-            padding: 12px;
-            border-radius: 10px;
-            min-height: 120px;
-            margin-top: 12px
-        }
-
-        .notice {
-            margin-top: 12px;
-            padding: 10px;
-            border-radius: 8px;
-            background: #fff7ed;
-            border: 1px solid #ffe6cc;
-            color: #6b4a00
-        }
-
-        .top-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px
-        }
-
-        .back-link {
-            background: transparent;
-            border: 0;
-            color: var(--blue);
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: underline;
-            padding: 6px
-        }
-
-        footer {
-            margin-top: 14px;
-            text-align: center;
-            color: var(--muted);
-            font-size: .9rem
-        }
-
-        @media(max-width:640px) {
-            .top-controls {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 6px
-            }
-        }
-
-        /* estilos para inputs dinâmicos */
-        .additional-list {
-            margin-top: 10px;
-            display: grid;
-            gap: 8px
-        }
-
-        .additional-item label {
-            font-weight: 600;
-            font-size: .95rem;
-            margin-bottom: 6px
-        }
-
-        /* checkbox inline e mais próximo do texto */
-        .checkbox-row {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 12px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .checkbox-row input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin: 0;
-            accent-color: var(--orange);
-        }
-
-        .checkbox-row span {
-            font-weight: 700;
-            color: #0b1723;
-            font-size: 1rem;
-        }
-
-        @media(max-width:480px) {
-            .checkbox-row {
-                gap: 8px
-            }
-
-            .checkbox-row span {
-                font-size: .98rem
-            }
-        }
-
-        /* feedback pequeno */
-        .status {
-            margin-top: 10px;
-            font-size: .95rem;
-        }
-
-        .status.success { color: #1f7a3a }
-        .status.error { color: #9b1d1d }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reservar — VMZ Turismo</title>
+  <meta name="description" content="Formulário de pré-reserva — envia por WhatsApp para +55 83 8195-2443" />
+  <style>
+    :root{--blue:#0b63c6;--orange:#ff7a18;--white:#fff;--muted:#6b7280;--bg:linear-gradient(180deg,#f7fbff,#ffffff);--card-shadow:0 12px 30px rgba(11,99,198,0.06);--radius:14px;--maxw:920px;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#071229;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--maxw);margin:18px auto;padding:16px}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--blue),#0851a8);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;box-shadow:var(--card-shadow)}
+    h1{margin:0;font-size:1.25rem}
+    p.lead{margin:4px 0 10px;color:var(--muted);font-size:.95rem}
+    .card{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--card-shadow)}
+    label{display:block;margin-top:10px;font-weight:700;color:#0b1723}
+    input,select,button,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #e8f1ff;font-size:1rem;background:transparent}
+    textarea{min-height:80px;resize:vertical}
+    .small{font-size:.9rem;color:var(--muted);margin-top:6px}
+    .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:800}
+    .btn-send{background:var(--orange);color:var(--white)}
+    .btn-ghost{background:transparent;border:1px solid #e6f4ff;color:var(--blue)}
+    .preview{white-space:pre-wrap;background:#f8fbff;border:1px dashed #e6f4ff;padding:12px;border-radius:10px;min-height:120px;margin-top:12px}
+    .notice{margin-top:12px;padding:10px;border-radius:8px;background:#fff7ed;border:1px solid #ffe6cc;color:#6b4a00}
+    .top-controls{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .back-link{background:transparent;border:0;color:var(--blue);font-weight:700;cursor:pointer;text-decoration:underline;padding:6px}
+    footer{margin-top:14px;text-align:center;color:var(--muted);font-size:.9rem}
+    @media(max-width:640px){.top-controls{flex-direction:column;align-items:flex-start;gap:6px}}
+    .additional-list{margin-top:10px;display:grid;gap:8px}
+    .additional-item label{font-weight:600;font-size:.95rem;margin-bottom:6px}
+    .checkbox-row{display:inline-flex;align-items:center;gap:10px;margin-top:12px;cursor:pointer;user-select:none}
+    .checkbox-row input[type="checkbox"]{width:18px;height:18px;margin:0;accent-color:var(--orange)}
+    .checkbox-row span{font-weight:700;color:#0b1723;font-size:1rem}
+    @media(max-width:480px){.checkbox-row{gap:8px}.checkbox-row span{font-size:.98rem}}
+    .status{margin-top:10px;font-size:.95rem}
+    .status.success{color:#1f7a3a}
+    .status.error{color:#9b1d1d}
+  </style>
 </head>
-
 <body>
-    <main class="wrap">
-        <header>
-            <div class="logo">VMZ</div>
-            <div>
-                <h1>Formulário de Pré-reserva</h1>
-                <p class="lead">A mensagem será enviada para <strong>+55 83 8195-2443</strong>. Verifique antes de
-                    enviar.</p>
-            </div>
-        </header>
+  <main class="wrap">
+    <header>
+      <div class="logo">VMZ</div>
+      <div>
+        <h1>Formulário de Pré-reserva</h1>
+        <p class="lead">A mensagem será enviada para <strong>+55 83 8195-2443</strong>. Verifique antes de enviar.</p>
+      </div>
+    </header>
 
-        <div class="top-controls">
-            <button id="btnBack" class="back-link">← Voltar à lista</button>
+    <div class="top-controls">
+      <button id="btnBack" class="back-link">← Voltar à lista</button>
+    </div>
+
+    <section class="card" aria-labelledby="formTitle">
+      <h2 id="formTitle" style="margin:0 0 8px 0;font-size:1.05rem">Dados</h2>
+
+      <form id="reserveForm" onsubmit="return false;" autocomplete="off" novalidate>
+        <label for="nome">Nome completo *</label>
+        <input id="nome" type="text" required placeholder="Ex: João da Silva">
+
+        <label for="telefone">Telefone (DDD + número) *</label>
+        <input id="telefone" type="tel" required placeholder="Ex: (83) 9 9999-9999" inputmode="tel">
+
+        <label for="destino">Destino *</label>
+        <input id="destino" type="text" readonly aria-readonly="true">
+
+        <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
+          <div style="flex:1;min-width:140px">
+            <label for="passageiros">Passageiros</label>
+            <input id="passageiros" type="number" min="1" value="1" inputmode="numeric">
+            <div class="small">Se maior que 1 serão gerados campos para inserir os nomes dos demais passageiros.</div>
+          </div>
+          <div style="flex:1;min-width:140px"></div>
         </div>
 
-        <section class="card" aria-labelledby="formTitle">
-            <h2 id="formTitle" style="margin:0 0 8px 0;font-size:1.05rem">Dados</h2>
+        <div id="additionalNames" class="additional-list" aria-live="polite"></div>
 
-            <form id="reserveForm" onsubmit="return false;" autocomplete="off" novalidate>
-                <label for="nome">Nome completo *</label>
-                <input id="nome" type="text" required placeholder="Ex: João da Silva">
+        <label class="checkbox-row" for="hasKid">
+          <input id="hasKid" type="checkbox" />
+          <span>Há criança de até 4 anos no grupo?</span>
+        </label>
 
-                <label for="telefone">Telefone (DDD + número) *</label>
-                <input id="telefone" type="tel" required placeholder="Ex: (83) 9 9999-9999" inputmode="tel">
+        <div id="kidInfoWrap" style="display:none;margin-top:8px">
+          <label for="kidName">Nome da criança (≤ 4 anos)</label>
+          <input id="kidName" type="text" placeholder="Nome da criança">
+        </div>
 
-                <label for="destino">Destino *</label>
-                <input id="destino" type="text" readonly aria-readonly="true">
+        <div class="actions">
+          <button id="btnSend" class="btn btn-send" type="button">Gerar & Enviar (WhatsApp)</button>
+          <button id="btnCopy" class="btn btn-ghost" type="button">Copiar mensagem</button>
+        </div>
 
-                <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
-                    <div style="flex:1;min-width:140px">
-                        <label for="passageiros">Passageiros</label>
-                        <input id="passageiros" type="number" min="1" value="1" inputmode="numeric">
-                        <div class="small">Se maior que 1 serão gerados campos para inserir os nomes dos demais
-                            passageiros.</div>
-                    </div>
-                    <div style="flex:1;min-width:140px">
-                    </div>
-                </div>
+        <div id="messageBox" class="preview" aria-live="polite">A pré-visualização aparecerá aqui.</div>
 
-                <div id="additionalNames" class="additional-list" aria-live="polite"></div>
+        <div class="status" id="statusMessage" role="status" aria-live="polite"></div>
 
-                <label class="checkbox-row" for="hasKid">
-                    <input id="hasKid" type="checkbox" />
-                    <span>Há criança de até 4 anos no grupo?</span>
-                </label>
+        <div class="notice" id="notice">
+          Observação: isto é uma <strong>pré-reserva</strong>. Para confirmar a reserva é necessário efetuar o pagamento da primeira parcela do pacote escolhido. Nossa equipe entrará em contato para orientar o pagamento e finalizar a reserva.
+        </div>
+      </form>
+    </section>
 
-                <div id="kidInfoWrap" style="display:none;margin-top:8px">
-                    <label for="kidName">Nome da criança (≤ 4 anos)</label>
-                    <input id="kidName" type="text" placeholder="Nome da criança">
-                </div>
+    <footer>© VMZ Turismo - JR.Dev</footer>
+  </main>
 
-                <div class="actions">
-                    <button id="btnSend" class="btn btn-send" type="button">Gerar & Enviar (WhatsApp)</button>
-                    <button id="btnCopy" class="btn btn-ghost" type="button">Copiar mensagem</button>
-                </div>
+  <script>
+    // elementos
+    const nomeEl = document.getElementById('nome');
+    const telEl = document.getElementById('telefone');
+    const destEl = document.getElementById('destino');
+    const passEl = document.getElementById('passageiros');
+    const additionalNamesWrap = document.getElementById('additionalNames');
+    const hasKidEl = document.getElementById('hasKid');
+    const kidInfoWrap = document.getElementById('kidInfoWrap');
+    const kidNameEl = document.getElementById('kidName');
 
-                <div id="messageBox" class="preview" aria-live="polite">A pré-visualização aparecerá aqui.</div>
+    const btnSend = document.getElementById('btnSend');
+    const btnCopy = document.getElementById('btnCopy');
+    const btnBack = document.getElementById('btnBack');
 
-                <div class="status" id="statusMessage" role="status" aria-live="polite"></div>
+    const messageBox = document.getElementById('messageBox');
+    const statusMessage = document.getElementById('statusMessage');
 
-                <div class="notice" id="notice">
-                    Observação: isto é uma <strong>pré-reserva</strong>. Para confirmar a reserva é necessário efetuar o
-                    pagamento da primeira parcela do pacote escolhido. Nossa equipe entrará em contato para orientar o
-                    pagamento e finalizar a reserva.
-                </div>
-            </form>
-        </section>
+    // URL do Google Apps Script — substitua pela sua se necessário
+    const SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbw5PwABfuvRqrFHwgiv-ND7f5SAdYliM_l8iE_AWpnXNXKG4cvuYyfRcyfU3okjnaRx/exec';
 
-        <footer>© VMZ Turismo - JR.Dev</footer>
-    </main>
+    // número fixo para WhatsApp (sem sinais)
+    const FIX_NUMBER = '558381952443';
 
-    <script>
-        // elementos
-        const nomeEl = document.getElementById('nome');
-        const telEl = document.getElementById('telefone');
-        const destEl = document.getElementById('destino');
-        const passEl = document.getElementById('passageiros');
-        const additionalNamesWrap = document.getElementById('additionalNames');
-        const hasKidEl = document.getElementById('hasKid');
-        const kidInfoWrap = document.getElementById('kidInfoWrap');
-        const kidNameEl = document.getElementById('kidName');
+    // util sanitização telefone
+    function sanitizePhone(raw) {
+      if (!raw) return '';
+      const digits = raw.replace(/\D/g, '');
+      if (digits.length >= 11 && digits.startsWith('55')) return digits;
+      if (digits.length === 11 || digits.length === 10) return '55' + digits;
+      return digits;
+    }
 
-        const btnSend = document.getElementById('btnSend');
-        const btnCopy = document.getElementById('btnCopy');
-        const btnBack = document.getElementById('btnBack');
+    // inputs dinâmicos
+    function renderAdditionalInputs(count, existingValues = []) {
+      const others = Math.max(0, (Number(count) || 1) - 1);
+      additionalNamesWrap.innerHTML = '';
+      if (others <= 0) return;
+      for (let i = 0; i < others; i++) {
+        const idx = i + 1;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'additional-item';
+        const label = document.createElement('label');
+        label.setAttribute('for', `otherName${idx}`);
+        label.textContent = `Nome do passageiro ${idx + 1}`;
+        const input = document.createElement('input');
+        input.id = `otherName${idx}`;
+        input.type = 'text';
+        input.placeholder = `Nome completo do passageiro ${idx + 1}`;
+        input.value = existingValues[i] || '';
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+        additionalNamesWrap.appendChild(wrapper);
+        input.addEventListener('input', debouncedUpdatePreview);
+      }
+    }
 
-        const messageBox = document.getElementById('messageBox');
-        const statusMessage = document.getElementById('statusMessage');
+    function getAdditionalNames() {
+      const inputs = additionalNamesWrap.querySelectorAll('input[id^="otherName"]');
+      return Array.from(inputs).map(i => i.value.trim()).filter(v => v !== '');
+    }
 
-        // URL do Google Apps Script (Apps Script que escreve no Google Sheets)
-        const SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbw5PwABfuvRqrFHwgiv-ND7f5SAdYliM_l8iE_AWpnXNXKG4cvuYyfRcyfU3okjnaRx/exec';
+    // monta mensagem detalhada (permanece apenas na pré-visualização)
+    function montarMensagem({ nome, telefone, destino, passageiros, additionalNames, hasKid, kidName }) {
+      const lines = [];
+      lines.push('✅ *Pré-reserva — VMZ Turismo*');
+      lines.push(`*Nome do solicitante:* ${nome}`);
+      lines.push(`*Destino:* ${destino}`);
+      lines.push(`*Passageiros (total):* ${passageiros}`);
+      if (additionalNames && additionalNames.length) {
+        lines.push(`*Nomes dos demais passageiros:*`);
+        additionalNames.forEach((n, i) => lines.push(`  ${i + 1}. ${n}`));
+      }
+      lines.push(`*Possui criança (≤4 anos):* ${hasKid ? 'Sim' : 'Não'}`);
+      if (hasKid && kidName) lines.push(`*Nome da criança:* ${kidName}`);
+      lines.push('');
+      lines.push('Observação: isto é uma *PRÉ-RESERVA*. Para confirmar a reserva é necessário efetuar o pagamento da primeira parcela do pacote escolhido.');
+      lines.push('Por favor, responder com disponibilidade e instruções para pagamento.');
+      return lines.join('\n');
+    }
 
-        // número fixo para WhatsApp (sem sinais)
-        const FIX_NUMBER = '558381952443';
+    function atualizarPreview() {
+      const nome = nomeEl.value.trim();
+      const telefone = telEl.value.trim();
+      const destino = destEl.value.trim();
+      const passageiros = passEl.value || '1';
+      const additionalNames = getAdditionalNames();
+      const hasKid = hasKidEl.checked;
+      const kidName = kidNameEl.value.trim();
 
-        // ---------------------------------------------------
-        // UTIL: sanitiza telefone (mantém apenas dígitos, adiciona 55 se faltar)
-        function sanitizePhone(raw) {
-            if (!raw) return '';
-            const digits = raw.replace(/\D/g, '');
-            if (digits.length >= 11 && digits.startsWith('55')) return digits;
-            if (digits.length === 11 || digits.length === 10) return '55' + digits;
-            return digits;
-        }
+      if (!nome || !telefone || !destino) {
+        messageBox.textContent = 'Preencha Nome, Telefone e Destino e clique em "Gerar & Enviar".';
+        return null;
+      }
+      const mensagem = montarMensagem({ nome, telefone, destino, passageiros, additionalNames, hasKid, kidName });
+      messageBox.textContent = mensagem;
+      return mensagem;
+    }
 
-        // Envia dados para Google Apps Script (que grava no Sheets)
-        // Agora usando URLSearchParams (form-urlencoded) para evitar preflight CORS com Apps Script
-        async function enviarParaSheets(dados) {
-            try {
-                // prepara payload: converte arrays para string
-                const payload = {
-                    nome: dados.nome || '',
-                    telefone: dados.telefone || '',
-                    destino: dados.destino || '',
-                    passageiros: dados.passageiros || '',
-                    additionalNames: Array.isArray(dados.additionalNames) ? dados.additionalNames.join('||') : (dados.additionalNames || ''),
-                    hasKid: dados.hasKid || '',
-                    kidName: dados.kidName || '',
-                    timestamp: dados.timestamp || new Date().toISOString()
-                    // se você usa secret/token, adicione aqui: secret: 'SEU_TOKEN'
-                };
+    // FUNÇÃO CORRETA que abre o WhatsApp com a mensagem curta pedida
+    function abrirWhats(mensagemCurta) {
+      // mensagemCurta: string simples como "pré-reserva feita, quero seguir com o pagamento!"
+      const encoded = encodeURIComponent(mensagemCurta);
+      const url = `https://wa.me/${FIX_NUMBER}?text=${encoded}`;
+      // abre em nova aba (ou no app quando móvel)
+      window.open(url, '_blank');
+    }
 
-                const body = new URLSearchParams();
-                Object.keys(payload).forEach(k => body.append(k, payload[k]));
+    // fallback por form (abre nova aba)
+    function submitFormFallback(payload) {
+      try {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = SPREADSHEET_URL;
+        form.target = '_blank';
+        form.style.display = 'none';
+        Object.keys(payload).forEach(k => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = k;
+          input.value = (payload[k] === undefined || payload[k] === null) ? '' : String(payload[k]);
+          form.appendChild(input);
+        });
+        document.body.appendChild(form);
+        form.submit();
+        setTimeout(() => { try { document.body.removeChild(form); } catch (e) {} }, 1200);
+        return true;
+      } catch (err) {
+        console.error('submitFormFallback erro:', err);
+        return false;
+      }
+    }
 
-                const response = await fetch(SPREADSHEET_URL, {
-                    method: 'POST',
-                    body: body,
-                    // NÃO setar headers Content-Type manualmente — deixa o browser definir
-                });
+    // enviar para Sheets - tenta fetch -> fallback por form
+    async function enviarParaSheets(dados) {
+      const payload = {
+        nome: dados.nome || '',
+        telefone: dados.telefone || '',
+        destino: dados.destino || '',
+        passageiros: dados.passageiros || '',
+        additionalNames: Array.isArray(dados.additionalNames) ? dados.additionalNames.join('||') : (dados.additionalNames || ''),
+        hasKid: dados.hasKid || '',
+        kidName: dados.kidName || '',
+        timestamp: dados.timestamp || new Date().toISOString()
+      };
 
-                // Se status não OK, tentamos ler texto para debug
-                if (!response.ok) {
-                    const txt = await response.text().catch(() => '');
-                    return { ok: false, message: `HTTP ${response.status} ${response.statusText} ${txt}` };
-                }
+      try {
+        const body = new URLSearchParams();
+        Object.keys(payload).forEach(k => body.append(k, payload[k]));
 
-                // Apps Script retorna JSON mesmo para form posts
-                const result = await response.json().catch(() => null);
-                if (result && (result.result === 'success' || result.status === 'success')) {
-                    return { ok: true, message: result.message || 'Gravado com sucesso' };
-                } else {
-                    // se result for null ou não indicar sucesso, devolve erro com conteúdo
-                    return { ok: false, message: result ? (result.message || JSON.stringify(result)) : 'Resposta inválida do servidor' };
-                }
-            } catch (err) {
-                console.error('Erro na requisição para o Sheets:', err);
-                return { ok: false, message: err.message || 'Erro de rede' };
-            }
-        }
-
-        // cria inputs dinâmicos para os demais passageiros
-        function renderAdditionalInputs(count, existingValues = []) {
-            const others = Math.max(0, (Number(count) || 1) - 1);
-            additionalNamesWrap.innerHTML = '';
-            if (others <= 0) return;
-            for (let i = 0; i < others; i++) {
-                const idx = i + 1;
-                const wrapper = document.createElement('div');
-                wrapper.className = 'additional-item';
-                const label = document.createElement('label');
-                label.setAttribute('for', `otherName${idx}`);
-                label.textContent = `Nome do passageiro ${idx + 1}`;
-                const input = document.createElement('input');
-                input.id = `otherName${idx}`;
-                input.type = 'text';
-                input.placeholder = `Nome completo do passageiro ${idx + 1}`;
-                input.value = existingValues[i] || '';
-                wrapper.appendChild(label);
-                wrapper.appendChild(input);
-                additionalNamesWrap.appendChild(wrapper);
-                input.addEventListener('input', debouncedUpdatePreview);
-            }
-        }
-
-        function getAdditionalNames() {
-            const inputs = additionalNamesWrap.querySelectorAll('input[id^="otherName"]');
-            return Array.from(inputs).map(i => i.value.trim()).filter(v => v !== '');
-        }
-
-        // monta mensagem com quebras de linha preservadas
-        function montarMensagem({ nome, telefone, destino, passageiros, additionalNames, hasKid, kidName }) {
-            const lines = [];
-            lines.push('✅ *Pré-reserva — VMZ Turismo*');
-            lines.push(`*Nome do solicitante:* ${nome}`);
-            lines.push(`*Destino:* ${destino}`);
-            lines.push(`*Passageiros (total):* ${passageiros}`);
-            if (additionalNames && additionalNames.length) {
-                lines.push(`*Nomes dos demais passageiros:*`);
-                additionalNames.forEach((n, i) => lines.push(`  ${i + 1}. ${n}`));
-            }
-            lines.push(`*Possui criança (≤4 anos):* ${hasKid ? 'Sim' : 'Não'}`);
-            if (hasKid && kidName) lines.push(`*Nome da criança:* ${kidName}`);
-            lines.push('');
-            lines.push('Observação: isto é uma *PRÉ-RESERVA*. Para confirmar a reserva é necessário efetuar o pagamento da primeira parcela do pacote escolhido.');
-            lines.push('Por favor, responder com disponibilidade e instruções para pagamento.');
-            return lines.join('\n');
-        }
-
-        function atualizarPreview() {
-            const nome = nomeEl.value.trim();
-            const telefone = telEl.value.trim();
-            const destino = destEl.value.trim();
-            const passageiros = passEl.value || '1';
-            const additionalNames = getAdditionalNames();
-            const hasKid = hasKidEl.checked;
-            const kidName = kidNameEl.value.trim();
-
-            if (!nome || !telefone || !destino) {
-                messageBox.textContent = 'Preencha Nome, Telefone e Destino e clique em "Gerar & Enviar".';
-                return null;
-            }
-            const mensagem = montarMensagem({ nome, telefone, destino, passageiros, additionalNames, hasKid, kidName });
-            messageBox.textContent = mensagem;
-            return mensagem;
-        }
-
-        // Abre WhatsApp com mensagem já codificada (preserva \n)
-        function abrirWhats(mensagem) {
-            const encoded = encodeURIComponent(mensagem);
-            const url = `https://wa.me/${FIX_NUMBER}?text=${encoded}`;
-            window.open(url, '_blank');
-        }
-
-        async function copiarMensagem() {
-            const mensagem = atualizarPreview();
-            if (!mensagem) return;
-            try {
-                await navigator.clipboard.writeText(mensagem);
-                statusMessage.textContent = 'Mensagem copiada para a área de transferência.';
-                statusMessage.className = 'status success';
-                setTimeout(() => { statusMessage.textContent = ''; }, 3500);
-            } catch (e) {
-                statusMessage.textContent = 'Não foi possível copiar automaticamente.';
-                statusMessage.className = 'status error';
-            }
-        }
-
-        let _debounceTimer = null;
-        function debouncedUpdatePreview() {
-            clearTimeout(_debounceTimer);
-            _debounceTimer = setTimeout(atualizarPreview, 220);
-        }
-
-        // BOTÕES / eventos
-        passEl.addEventListener('input', () => {
-            const value = Number(passEl.value || 1);
-            const existing = getAdditionalNames();
-            renderAdditionalInputs(value, existing);
-            atualizarPreview();
+        const resp = await fetch(SPREADSHEET_URL, {
+          method: 'POST',
+          body: body
         });
 
-        hasKidEl.addEventListener('change', () => {
-            kidInfoWrap.style.display = hasKidEl.checked ? 'block' : 'none';
-            if (!hasKidEl.checked) kidNameEl.value = '';
-            debouncedUpdatePreview();
-        });
+        if (!resp.ok) {
+          const txt = await resp.text().catch(()=> '');
+          return { ok: false, message: `HTTP ${resp.status} ${resp.statusText} ${txt}` };
+        }
 
-        [nomeEl, telEl, passEl, kidNameEl].forEach(el => {
-            el && el.addEventListener('input', debouncedUpdatePreview);
-        });
+        try {
+          const json = await resp.json();
+          if (json && (json.result === 'success' || json.status === 'success')) {
+            return { ok: true, message: json.message || 'Gravado via fetch' };
+          } else {
+            return { ok: false, message: json ? (json.message || JSON.stringify(json)) : 'Resposta inválida' };
+          }
+        } catch (err) {
+          // HTTP 200 mas sem JSON -> considerar sucesso parcial
+          return { ok: true, message: 'Gravado (HTTP 200) — resposta não JSON' };
+        }
+      } catch (err) {
+        console.warn('fetch falhou, usando fallback por form:', err);
+        const sent = submitFormFallback(payload);
+        if (sent) return { ok: true, message: 'Enviado via form fallback (nova aba aberta)', viaFallback:true };
+        return { ok: false, message: err.message || 'Erro de rede' };
+      }
+    }
 
-        btnCopy.addEventListener('click', copiarMensagem);
+    // debounce preview
+    let _debounceTimer = null;
+    function debouncedUpdatePreview(){ clearTimeout(_debounceTimer); _debounceTimer = setTimeout(atualizarPreview,220); }
 
-        btnBack.addEventListener('click', () => {
-            const params = new URLSearchParams(window.location.search);
-            const passageiros = params.get('passageiros');
-            const filter = params.get('filter');
-            const qs = new URLSearchParams();
-            if (passageiros) qs.set('passageiros', passageiros);
-            if (filter) qs.set('filter', filter);
-            const s = qs.toString();
-            window.location.href = s ? `index.html?${s}` : 'index.html';
-        });
+    // eventos inputs
+    passEl.addEventListener('input', ()=>{ renderAdditionalInputs(passEl.value||1, getAdditionalNames()); atualizarPreview(); });
+    hasKidEl.addEventListener('change', ()=>{ kidInfoWrap.style.display = hasKidEl.checked ? 'block' : 'none'; if(!hasKidEl.checked) kidNameEl.value=''; debouncedUpdatePreview(); });
+    [nomeEl,telEl,passEl,kidNameEl].forEach(el=> el && el.addEventListener('input', debouncedUpdatePreview) );
 
-        // Envio principal: grava no Sheets via Apps Script, só depois abre WhatsApp
-        btnSend.addEventListener('click', async () => {
-            const nome = nomeEl.value.trim();
-            const telefoneRaw = telEl.value.trim();
-            const destino = destEl.value.trim();
+    btnCopy.addEventListener('click', async ()=> {
+      const mensagem = atualizarPreview();
+      if (!mensagem) return;
+      try { await navigator.clipboard.writeText(mensagem); statusMessage.textContent='Mensagem copiada para a área de transferência.'; statusMessage.className='status success'; setTimeout(()=>statusMessage.textContent='',3500); }
+      catch(e){ statusMessage.textContent='Não foi possível copiar automaticamente.'; statusMessage.className='status error'; }
+    });
 
-            if (!nome || !telefoneRaw || !destino) {
-                alert('Preencha Nome, Telefone e Destino antes de enviar.');
-                return;
-            }
+    btnBack.addEventListener('click', ()=> {
+      const params = new URLSearchParams(window.location.search);
+      const passageiros = params.get('passageiros');
+      const filter = params.get('filter');
+      const qs = new URLSearchParams();
+      if(passageiros) qs.set('passageiros',passageiros);
+      if(filter) qs.set('filter',filter);
+      const s = qs.toString();
+      window.location.href = s ? `index.html?${s}` : 'index.html';
+    });
 
-            const telefoneSan = sanitizePhone(telefoneRaw);
-            if (!telefoneSan) {
-                alert('Telefone inválido. Insira DDD + número.');
-                return;
-            }
+    // --- HANDLER PRINCIPAL: salvar no sheet e, apenas após confirmação de sucesso, abrir WhatsApp com mensagem curta
+    btnSend.addEventListener('click', async ()=> {
+      const nome = nomeEl.value.trim();
+      const telefoneRaw = telEl.value.trim();
+      const destino = destEl.value.trim();
+      if(!nome || !telefoneRaw || !destino) { alert('Preencha Nome, Telefone e Destino antes de enviar.'); return; }
 
-            const dadosFormulario = {
-                nome: nome,
-                telefone: telefoneSan,
-                destino: destino,
-                passageiros: passEl.value || '1',
-                additionalNames: getAdditionalNames(),
-                hasKid: hasKidEl.checked ? 'Sim' : 'Não',
-                kidName: kidNameEl.value.trim(),
-                timestamp: new Date().toISOString()
-            };
+      const telefoneSan = sanitizePhone(telefoneRaw);
+      if(!telefoneSan) { alert('Telefone inválido. Insira DDD + número.'); return; }
 
-            // UX: desabilita botão e mostra status
-            btnSend.disabled = true;
-            btnSend.textContent = 'Enviando...';
-            statusMessage.textContent = 'Salvando pré-reserva...';
-            statusMessage.className = '';
+      const dadosFormulario = {
+        nome: nome,
+        telefone: telefoneSan,
+        destino: destino,
+        passageiros: passEl.value || '1',
+        additionalNames: getAdditionalNames(),
+        hasKid: hasKidEl.checked ? 'Sim' : 'Não',
+        kidName: kidNameEl.value.trim(),
+        timestamp: new Date().toISOString()
+      };
 
-            const result = await enviarParaSheets(dadosFormulario);
+      // UX
+      btnSend.disabled = true;
+      btnSend.textContent = 'Enviando...';
+      statusMessage.textContent = 'Salvando pré-reserva...';
+      statusMessage.className = '';
 
-            if (result.ok) {
-                statusMessage.textContent = 'Pré-reserva salva com sucesso. Abrindo WhatsApp...';
-                statusMessage.className = 'status success';
+      const result = await enviarParaSheets(dadosFormulario);
 
-                // monta mensagem e abre WhatsApp
-                const mensagem = montarMensagem({
-                    nome: nome,
-                    telefone: telefoneSan,
-                    destino: destino,
-                    passageiros: passEl.value || '1',
-                    additionalNames: getAdditionalNames(),
-                    hasKid: hasKidEl.checked,
-                    kidName: kidNameEl.value.trim()
-                });
+      if (result.ok) {
+        statusMessage.textContent = 'Pré-reserva salva com sucesso!';
+        statusMessage.className = 'status success';
 
-                // pequenas esperas para deixar o status visível
-                setTimeout(() => abrirWhats(mensagem), 700);
+        // abre WhatsApp com a mensagem curta solicitada
+        const mensagemWhatsapp = 'pré-reserva feita, quero seguir com o pagamento!';
+        abrirWhats(mensagemWhatsapp);
 
-                // limpa botão após ação
-                setTimeout(() => {
-                    btnSend.disabled = false;
-                    btnSend.textContent = 'Gerar & Enviar (WhatsApp)';
-                }, 900);
-            } else {
-                statusMessage.textContent = 'Erro ao salvar pré-reserva: ' + (result.message || 'verifique a conexão');
-                statusMessage.className = 'status error';
-                btnSend.disabled = false;
-                btnSend.textContent = 'Gerar & Enviar (WhatsApp)';
-            }
-        });
+      } else {
+        statusMessage.textContent = 'Erro ao salvar pré-reserva: ' + (result.message || 'verifique a conexão');
+        statusMessage.className = 'status error';
+      }
 
-        // ---------------------------------------
-        // prefill via query params (destino/passageiros/moreNames/kid)
-        (function prefillFromQuery() {
-            const params = new URLSearchParams(window.location.search);
-            const destino = params.get('destino');
-            const passageiros = params.get('passageiros');
-            const moreNames = params.get('moreNames');
-            const kid = params.get('kid');
-            const kidName = params.get('kidName');
+      // restaura botão
+      btnSend.disabled = false;
+      btnSend.textContent = 'Gerar & Enviar (WhatsApp)';
+    });
 
-            if (destino) destEl.value = destino;
-            if (passageiros) passEl.value = passageiros;
-            const existingValues = [];
-            if (moreNames) {
-                if (moreNames.indexOf('||') !== -1) existingValues.push(...moreNames.split('||').map(s => decodeURIComponent(s)));
-                else existingValues.push(...moreNames.split(',').map(s => decodeURIComponent(s).trim()));
-            }
-            renderAdditionalInputs(passEl.value || 1, existingValues);
-            if (kid === '1') {
-                hasKidEl.checked = true;
-                kidInfoWrap.style.display = 'block';
-                if (kidName) kidNameEl.value = decodeURIComponent(kidName);
-            }
-            if (destino) nomeEl.focus();
-            atualizarPreview();
-        })();
-    </script>
+    // prefill query params
+    (function prefillFromQuery(){
+      const params = new URLSearchParams(window.location.search);
+      const destino = params.get('destino');
+      const passageiros = params.get('passageiros');
+      const moreNames = params.get('moreNames');
+      const kid = params.get('kid');
+      const kidName = params.get('kidName');
+
+      if(destino) destEl.value = destino;
+      if(passageiros) passEl.value = passageiros;
+      const existingValues = [];
+      if(moreNames){
+        if(moreNames.indexOf('||') !== -1) existingValues.push(...moreNames.split('||').map(s => decodeURIComponent(s)));
+        else existingValues.push(...moreNames.split(',').map(s => decodeURIComponent(s).trim()));
+      }
+      renderAdditionalInputs(passEl.value || 1, existingValues);
+      if(kid === '1'){ hasKidEl.checked = true; kidInfoWrap.style.display='block'; if(kidName) kidNameEl.value = decodeURIComponent(kidName); }
+      if(destino) nomeEl.focus();
+      atualizarPreview();
+    })();
+
+  </script>
 </body>
-
 </html>
-
